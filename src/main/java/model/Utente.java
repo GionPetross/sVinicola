@@ -19,6 +19,8 @@ public class Utente {
 		this.admin = admin;
 	}
 	
+	public Utente() {};
+	
 	
 	// Getter e Setter
 	public int getId() { return id; }
@@ -31,7 +33,7 @@ public class Utente {
 	public void setPassword(String password) { this.password = password; }
 	
 	public String getIndirizzo() { return indirizzo; }
-	public void Indirizzo(String indirizzo) { this.indirizzo = indirizzo; }
+	public void setIndirizzo(String indirizzo) { this.indirizzo = indirizzo; }
 
 	public String getEmail() { return email; }
 	public void setEmail(String email) { this.email = email; }
