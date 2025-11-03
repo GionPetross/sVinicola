@@ -153,7 +153,6 @@ public class OrdineDAO implements DAOinterface<OrdineBean> {
 			ps.setInt(1, idOrdine);
 
 			result = ps.executeUpdate();
-			connection.commit();
 
 		} finally {
 			try {
@@ -224,7 +223,6 @@ public class OrdineDAO implements DAOinterface<OrdineBean> {
 			ps.setInt(5, ordine.getIdOrdine());
 
 			ps.executeUpdate();
-			connection.commit();
 
 		} finally {
 			try {

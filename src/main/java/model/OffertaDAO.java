@@ -36,7 +36,6 @@ public class OffertaDAO implements DAOinterface<OffertaBean> {
             ps.setString(4, offerta.getImmaginePromozionale());
 
             ps.executeUpdate();
-            connection.commit();
 
         } finally {
             try {
@@ -98,7 +97,6 @@ public class OffertaDAO implements DAOinterface<OffertaBean> {
             ps.setInt(1, idOfferta);
 
             result = ps.executeUpdate();
-            connection.commit();
 
         } finally {
             try {
@@ -170,7 +168,6 @@ public class OffertaDAO implements DAOinterface<OffertaBean> {
             ps.setInt(5, offerta.getIdOfferta());
 
             ps.executeUpdate();
-            connection.commit();
 
         } finally {
             try {

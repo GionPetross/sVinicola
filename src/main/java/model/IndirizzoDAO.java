@@ -186,9 +186,7 @@ public class IndirizzoDAO implements DAOinterface<IndirizzoBean> {
     // METODI SPECIFICI (NON in DAOinterface)
     // ==================================================================
 
-    /**
-     * Metodo specifico per recuperare tutti gli indirizzi di un singolo utente.
-     */
+    // Metodo specifico per recuperare tutti gli indirizzi di un singolo utente.
     public synchronized List<IndirizzoBean> doRetrieveByUtente(int idUtente) throws SQLException {
         Connection connection = null;
         PreparedStatement ps = null;

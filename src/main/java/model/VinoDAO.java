@@ -44,8 +44,6 @@ public class VinoDAO implements DAOinterface<VinoBean> {
 			ps.setBoolean(11, vino.isInVendita()); // Default TRUE
 
 			ps.executeUpdate();
-			connection.commit();
-
 		} finally {
 			try {
 				if (ps != null) ps.close();
@@ -112,7 +110,6 @@ public class VinoDAO implements DAOinterface<VinoBean> {
 			ps.setInt(1, idVino);
 
 			result = ps.executeUpdate();
-			connection.commit();
 
 		} finally {
 			try {
@@ -200,7 +197,6 @@ public class VinoDAO implements DAOinterface<VinoBean> {
 			ps.setInt(12, vino.getIdVino());
 
 			ps.executeUpdate();
-			connection.commit();
 
 		} finally {
 			try {
@@ -316,8 +312,7 @@ public class VinoDAO implements DAOinterface<VinoBean> {
 			ps.setInt(2, idOfferta);
 
 			ps.executeUpdate();
-			connection.commit();
-
+			
 		} finally {
 			try {
 				if (ps != null) ps.close();
@@ -343,7 +338,6 @@ public class VinoDAO implements DAOinterface<VinoBean> {
 			ps.setInt(2, idOfferta);
 
 			result = ps.executeUpdate();
-			connection.commit();
 
 		} finally {
 			try {

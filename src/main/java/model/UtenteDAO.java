@@ -36,7 +36,6 @@ public class UtenteDAO implements DAOinterface<UtenteBean> {
 			ps.setString(6, utente.getCognome());
 
 			ps.executeUpdate();
-			connection.commit();
 
 		} finally {
 			try {
@@ -100,7 +99,6 @@ public class UtenteDAO implements DAOinterface<UtenteBean> {
 			ps.setInt(1, idUtente);
 
 			result = ps.executeUpdate();
-			connection.commit();
 
 		} finally {
 			try {
@@ -175,7 +173,6 @@ public class UtenteDAO implements DAOinterface<UtenteBean> {
 			ps.setInt(7, utente.getIdUtente());
 
 			ps.executeUpdate();
-			connection.commit();
 
 		} finally {
 			try {
@@ -286,7 +283,6 @@ public class UtenteDAO implements DAOinterface<UtenteBean> {
 			ps.setInt(2, idVino);
 
 			ps.executeUpdate();
-			connection.commit();
 
 		} finally {
 			try {
@@ -312,7 +308,6 @@ public class UtenteDAO implements DAOinterface<UtenteBean> {
 			ps.setInt(2, idVino);
 
 			result = ps.executeUpdate();
-			connection.commit();
 
 		} finally {
 			try {
