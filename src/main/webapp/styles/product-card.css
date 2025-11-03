@@ -1,0 +1,126 @@
+@charset "UTF-8";
+
+.catalogo-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+	gap: 20px;
+}
+
+.product-card {
+	border: 1px solid var(--colore-bordo-etichetta);
+	border-radius: 4px;
+	background-color: var(--colore-sfondo-etichetta);
+	box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+}
+
+.product-card .image-container {
+	position: relative;
+	overflow: hidden;
+}
+
+.product-card img {
+	display: block;
+	width: 100%;
+	height: 250px;
+	object-fit: contain; 
+	transition: transform 0.3s ease;
+}
+
+.product-card .hover-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.6);
+	color: #FFFFFF;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	padding: 10px;
+	opacity: 0;
+	transition: opacity 0.3s ease;
+	pointer-events: none;
+}
+
+.product-card .image-container a:hover + .hover-overlay {
+	opacity: 1;
+}
+
+.product-card:hover img {
+	transform: scale(1.05);
+}
+
+.product-card .product-info {
+	padding: 15px 15px 10px 15px;
+	flex-grow: 1;
+}
+
+.product-card .product-info h3 {
+	margin: 0;
+	font-size: 1.1rem;
+}
+
+.product-purchase-bar {
+	display: flex;
+	align-items: stretch;
+	border-top: 1px solid var(--colore-bordo-etichetta);
+}
+
+.product-purchase-bar .product-price {
+	font-size: 1.2rem;
+	font-weight: bold;
+	color: var(--colore-accento);
+	width: 50%;
+	order: 2;
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	padding: 10px 15px;
+}
+
+.product-purchase-bar .btn-aggiungi {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 50%;
+	order: 1;
+	background-color: var(--colore-sfondo-etichetta);
+	border-right: 1px solid var(--colore-bordo-etichetta);
+	color: var(--colore-accento);
+	text-decoration: none;
+	font-size: 0.9rem;
+	font-weight: bold;
+	cursor: pointer;
+	min-height: 40px; 
+	padding: 10px;
+	overflow: hidden;	
+	transition: background-color 0.2s, color 0.2s;
+}
+
+.product-purchase-bar .btn-aggiungi:hover {
+	background-color: var(--colore-accento);
+	color: var(--colore-sfondo-etichetta);
+}
+
+.product-purchase-bar .btn-aggiungi .text-cart {
+	display: none;
+}
+
+.product-purchase-bar .btn-aggiungi .icon-cart {
+	display: block;
+	height: 24px;
+	width: auto;
+}
+
+.product-purchase-bar .btn-aggiungi:hover .text-cart {
+	display: block;
+}
+
+.product-purchase-bar .btn-aggiungi:hover .icon-cart {
+	display: none;
+}

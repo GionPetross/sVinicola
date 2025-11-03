@@ -1,0 +1,93 @@
+@charset "UTF-8";
+
+@import url('themes.css');
+@import url('layout.css');
+@import url('components.css');
+@import url('product-card.css');
+
+html {
+	background-color: var(--colore-sfondo);
+	background-image: linear-gradient(to right, 
+		var(--colore-sfondo-gradiente), 
+		var(--colore-sfondo) 20%, 
+		var(--colore-sfondo) 80%, 
+		var(--colore-sfondo-gradiente)
+	);
+	scroll-behavior: smooth; 
+	transition: background-color 0.3s;
+}
+
+body {
+	margin: 0;
+	font-family: 'Helvetica', sans-serif;
+	background-color: transparent; 
+	color: var(--colore-testo);
+	transition: color 0.3s;
+	position: relative; 
+}
+
+main {
+	padding: 20px 5%;
+	max-width: 1600px; 
+	margin: 0 auto; 
+}
+
+/* =======================================
+   BOLLICINE (FIX Colore e Dimensione)
+   =======================================
+*/
+
+body,
+body[data-theme="light"] {
+	overflow-x: hidden;
+}
+
+body::before,
+body[data-theme="light"]::before {
+	content: '';
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: -1;
+	
+	/* MODIFICA: Bolle bianche e più grandi 
+	*/
+	background-image: 
+		/* Bolle piccole (5px) - bianche */
+		radial-gradient(circle, rgba(255,255,255,0.5) 5px, transparent 6px),
+		/* Bolle medie (8px) - bianche */
+		radial-gradient(circle, rgba(255,255,255,0.7) 8px, transparent 9px),
+		/* Bolle grandi (12px) - bianche */
+		radial-gradient(circle, rgba(255,255,255,0.4) 12px, transparent 14px);
+	
+	/* Aumentiamo la distanza tra le bolle più grandi */
+	background-size: 
+		100px 100px,
+		150px 150px,
+		200px 200px;
+	
+	animation: bollicine 25s linear infinite;
+}
+
+body[data-theme="dark"]::before {
+	display: none;
+	content: none;
+}
+
+/* Animazione (invariata, ma ora muove bolle grandi) */
+@keyframes bollicine {
+	from {
+		background-position: 
+			10px 1000px,  
+			50px 1200px,  
+			100px 1050px; 
+	}
+	to {
+		background-position: 
+			10px -1000px,  
+			50px -1300px,  
+			100px -800px; 
+	}
+}

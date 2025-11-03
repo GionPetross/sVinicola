@@ -1,0 +1,47 @@
+@charset "UTF-8";
+
+.stile-etichetta {
+    background-color: var(--colore-sfondo-etichetta);
+    border: 1px solid var(--colore-bordo-etichetta);
+    box-shadow: 3px 3px 8px rgba(0,0,0,0.15);
+    padding: 20px;
+    margin: 20px;
+    border-radius: 4px;
+}
+
+/* === Sidebar === */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -300px; /* Nascosta fuori dallo schermo */
+    width: 300px;
+    height: 100vh;
+    z-index: 1001; /* Sopra l'header */
+    
+    background-color: var(--colore-sfondo-etichetta);
+    border-right: 2px solid var(--colore-bordo-etichetta);
+    box-shadow: 5px 0 15px rgba(0,0,0,0.2);
+    
+    transition: left 0.3s ease-in-out;
+    overflow-y: auto; /* Per scrollare */
+}
+
+/* La sidebar appare */
+.sidebar.open {
+    left: 0; 
+}
+
+.sidebar h3 {
+    border-bottom: 1px solid var(--colore-rosa-etichetta);
+    padding-bottom: 10px;
+    font-style: italic;
+    color: var(--colore-accento);
+}
+
+/* === Banner Promozionale === */
+.promozioni-banner {
+    composes: stile-etichetta; 
+    
+    text-align: center;
+    border: 2px dashed var(--colore-rosa-etichetta);
+}

@@ -1,0 +1,31 @@
+@charset "UTF-8";
+
+:root {
+	/* Color Palette */
+	--colore-vino-rosso-scuro: #4d012b; 
+	--colore-vino-rosso-medio: #63032e; 
+	--colore-accento-bordeaux: #7a4044;
+	--colore-rosa-etichetta: #c39393;
+	--colore-rosa-chiaro: #ccb1b3;
+	
+	--colore-vino-bianco-bg: #f4f0e6;  
+	--colore-etichetta-carta: #fdfbf5; 
+	
+	/*TEMA LIGHT*/
+	--colore-sfondo: var(--colore-vino-bianco-bg); 
+	--colore-testo: var(--colore-vino-rosso-medio); 
+	--colore-accento: var(--colore-accento-bordeaux);
+	--colore-sfondo-etichetta: var(--colore-etichetta-carta);
+	--colore-bordo-etichetta: var(--colore-rosa-etichetta);
+	--colore-sfondo-gradiente: rgba(0,0,0,0.05); 
+}
+
+/*TEMA DARK*/
+body[data-theme="dark"] {
+	--colore-sfondo: var(--colore-vino-rosso-scuro); 
+	--colore-testo: var(--colore-vino-bianco-bg); 
+	--colore-accento: var(--colore-rosa-chiaro);
+	--colore-sfondo-etichetta: #2b0116; 
+	--colore-bordo-etichetta: var(--colore-accento-bordeaux);
+	--colore-sfondo-gradiente: rgba(0,0,0,0.2); 
+}

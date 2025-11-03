@@ -1,0 +1,150 @@
+@charset "UTF-8";
+
+/* === Sticky Header === */
+header {
+	position: sticky;
+	top: 0;
+	z-index: 1000;
+	
+	background-color: var(--colore-sfondo-etichetta);
+	border-bottom: 2px solid var(--colore-bordo-etichetta);
+	box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Contenitore Flex per allineare gli elementi dell'header */
+.header-container {
+	display: flex;
+	justify-content: space-between; 
+	align-items: center; 
+	padding: 5px 20px; /* Ridotto padding verticale */
+	max-width: 1600px;
+	margin: 0 auto;
+}
+
+/* Liste orizzontali per i menu */
+.main-nav ul,
+.user-nav ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	display: flex; /* Elementi <li> in orizzontale */
+	align-items: center; 
+}
+
+.main-nav li,
+.user-nav li {
+	margin-left: 15px;
+}
+
+.main-nav a,
+.user-nav a,
+.user-nav .welcome-msg {
+	display: block;
+	padding: 10px 5px; /* Ridotto padding verticale */
+	text-decoration: none;
+	color: var(--colore-testo);
+	font-weight: bold;
+}
+
+.user-nav .welcome-msg {
+	white-space: nowrap; /* Non manda a capo il nome */
+}
+
+/* Stile per le icone nell'header */
+.header-logo-img {
+	height: 40px; 
+	display: block;
+	margin-top: 5px;
+}
+
+.header-icon-img {
+	height: 24px; 
+	width: 24px;
+	object-fit: contain;
+}
+
+.theme-toggle {
+	background: none;
+	border: 1px solid var(--colore-accento);
+	color: var(--colore-accento);
+	padding: 5px;
+	cursor: pointer;
+	border-radius: 5px;
+}
+
+/* Bottone Hamburger (Nuovo) */
+.sidebar-toggle {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	width: 30px;
+	height: 30px;
+	background: transparent;
+	border: none;
+	cursor: pointer;
+	padding: 0;
+	z-index: 1002;
+}
+
+.sidebar-toggle span {
+	width: 100%;
+	height: 3px;
+	background-color: var(--colore-testo);
+	border-radius: 2px;
+	transition: all 0.3s ease;
+}
+
+/* === Banner Promozioni (Scroll Orizzontale) === */
+.promozioni-banner {
+	padding: 10px;
+}
+
+.banner-scroll-container {
+	display: flex;
+	overflow-x: auto; 
+	gap: 15px; 
+	
+	scrollbar-width: none; 
+	-ms-overflow-style: none;  
+}
+.banner-scroll-container::-webkit-scrollbar { 
+	display: none; 
+}
+
+.banner-card {
+	flex-shrink: 0; 
+	width: 300px; 
+	border: 1px solid var(--colore-bordo-etichetta);
+	border-radius: 4px;
+	overflow: hidden;
+}
+
+.banner-card img {
+	width: 100%;
+	display: block;
+}
+
+
+/* === Pulsante per Nascondere/Mostrare Banner === */
+#toggle-banner-btn {
+	position: sticky;
+	top: 55px; /* Adattato alla nuova altezza header */
+	z-index: 999; 
+	
+	display: none;
+	cursor: pointer;
+	padding: 5px 10px;
+	background-color: var(--colore-accento);
+	color: var(--colore-sfondo-etichetta);
+	border: none;
+	border-radius: 0 0 5px 5px;
+	margin-left: 20px;
+}
+
+.banner-nascosto .promozioni-banner {
+	display: none;
+}
+
+.banner-nascosto #toggle-banner-btn {
+	display: inline-block;
+}
