@@ -63,6 +63,7 @@ CREATE TABLE Vino (
     Formato VARCHAR(20), -- Quanti litri
     Origine VARCHAR(100), -- Cantina/Regione
     In_Vendita BOOLEAN NOT NULL DEFAULT TRUE 
+    Data_Aggiunta TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 

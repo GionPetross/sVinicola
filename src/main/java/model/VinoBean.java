@@ -2,6 +2,7 @@ package model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 public class VinoBean implements Serializable {
 
@@ -19,6 +20,7 @@ public class VinoBean implements Serializable {
 	private String formato;
 	private String origine;
 	private boolean inVendita;
+	private Timestamp dataAggiunta;
 
 	// Costruttore vuoto
 	public VinoBean() {
@@ -61,6 +63,9 @@ public class VinoBean implements Serializable {
 	public boolean isInVendita() { return inVendita; }
 	public void setInVendita(boolean inVendita) { this.inVendita = inVendita; }
 
+	public Timestamp getDataAggiunta() { return dataAggiunta; }
+	public void setDataAggiunta(Timestamp dataAggiunta) { this.dataAggiunta = dataAggiunta;}
+	
 	@Override
 	public String toString() {
 		return "VinoBean [idVino=" + idVino + ", nome=" + nome + ", tipo=" + tipo + ", prezzo=" + prezzo + "]";
