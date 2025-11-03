@@ -1,47 +1,72 @@
 @charset "UTF-8";
 
 .stile-etichetta {
-    background-color: var(--colore-sfondo-etichetta);
-    border: 1px solid var(--colore-bordo-etichetta);
-    box-shadow: 3px 3px 8px rgba(0,0,0,0.15);
-    padding: 20px;
-    margin: 20px;
-    border-radius: 4px;
+	background-color: var(--colore-sfondo-etichetta);
+	border: 1px solid var(--colore-bordo-etichetta);
+	box-shadow: 3px 3px 8px rgba(0,0,0,0.15);
+	padding: 20px;
+	margin: 20px;
+	border-radius: 4px;
 }
 
-/* === Sidebar === */
+/* === SDIEBAR CHE ODIO === */
 .sidebar {
-    position: fixed;
-    top: 0;
-    left: -300px; /* Nascosta fuori dallo schermo */
-    width: 300px;
-    height: 100vh;
-    z-index: 1001; /* Sopra l'header */
-    
-    background-color: var(--colore-sfondo-etichetta);
-    border-right: 2px solid var(--colore-bordo-etichetta);
-    box-shadow: 5px 0 15px rgba(0,0,0,0.2);
-    
-    transition: left 0.3s ease-in-out;
-    overflow-y: auto; /* Per scrollare */
+	position: fixed;
+	top: 0;
+	left: -300px; /* Nascosta di default fuori schermo */
+	width: 300px;
+	height: 100vh;
+	z-index: 1001;
+	
+	background-color: var(--colore-sfondo-etichetta);
+	border-right: 2px solid var(--colore-bordo-etichetta);
+	box-shadow: 5px 0 15px rgba(0,0,0,0.2);
+	
+	transition: left 0.3s ease-in-out;
+	overflow-y: auto;
+	padding: 20px;
+	box-sizing: border-box; /* Assicura che il padding non allarghi il div */
 }
 
-/* La sidebar appare */
+/* Regola per mostrare la sidebar */
 .sidebar.open {
-    left: 0; 
+	left: 0; 
 }
 
 .sidebar h3 {
-    border-bottom: 1px solid var(--colore-rosa-etichetta);
-    padding-bottom: 10px;
-    font-style: italic;
-    color: var(--colore-accento);
+	border-bottom: 1px solid var(--colore-rosa-etichetta);
+	padding-bottom: 10px;
+	font-style: italic;
+	color: var(--colore-accento);
+	margin-top: 40px; /* Spazio per il bottone X */
 }
 
 /* === Banner Promozionale === */
 .promozioni-banner {
-    composes: stile-etichetta; 
-    
-    text-align: center;
-    border: 2px dashed var(--colore-rosa-etichetta);
+	composes: stile-etichetta; 
+	
+	text-align: center;
+	border: 2px dashed var(--colore-rosa-etichetta);
+}
+
+
+/* === Stile per il bottone di chiusura sidebar === */
+.sidebar-close {
+	position: absolute;
+	top: 10px;
+	right: 15px;
+	
+	background: none;
+	border: none;
+	
+	font-size: 2.5rem;
+	color: var(--colore-testo);
+	cursor: pointer;
+	
+	padding: 0;
+	line-height: 1;
+}
+
+.sidebar-close:hover {
+	color: var(--colore-accento);
 }

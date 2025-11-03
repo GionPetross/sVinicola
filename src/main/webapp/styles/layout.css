@@ -96,32 +96,87 @@ header {
 
 /* === Banner Promozioni (Scroll Orizzontale) === */
 .promozioni-banner {
-	padding: 10px;
+	width: 100%;
+	height: 70vh; /* La tua altezza preferita */
+	position: relative; 
+	background-color: var(--colore-sfondo-etichetta);
 }
 
-.banner-scroll-container {
-	display: flex;
-	overflow-x: auto; 
-	gap: 15px; 
-	
-	scrollbar-width: none; 
-	-ms-overflow-style: none;  
-}
-.banner-scroll-container::-webkit-scrollbar { 
-	display: none; 
-}
-
-.banner-card {
-	flex-shrink: 0; 
-	width: 300px; 
-	border: 1px solid var(--colore-bordo-etichetta);
-	border-radius: 4px;
+.banner-scroll-viewport {
+	position: relative;
+	width: 100%;
+	height: 100%;
 	overflow: hidden;
 }
 
+.banner-scroll-container {
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+.banner-card {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	transition: transform 0.6s ease-in-out;
+	transform: translateX(100%); 
+}
+
+/* Slider sinistra/destra */
+
+.banner-card.active {
+	transform: translateX(0);
+	z-index: 10;
+}
+
+.banner-card.exit-left {
+	transform: translateX(-100%);
+	z-index: 5;
+}
+
+.banner-card.exit-right {
+	transform: translateX(100%);
+	z-index: 5;
+}
+
+.banner-card.enter-left {
+	transform: translateX(-100%);
+	z-index: 15;
+}
+
+.banner-card a,
 .banner-card img {
 	width: 100%;
+	height: 100%;
 	display: block;
+	object-fit: cover; 
+}
+
+/*I bottoni*/
+.banner-scroll-btn {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	z-index: 20; /* Sopra tutto il resto */
+	background-color: rgba(0, 0, 0, 0.3);
+	color: white;
+	border: none;
+	font-size: 2rem;
+	padding: 10px;
+	cursor: pointer;
+	transition: background-color 0.2s;
+	border-radius: 50%;
+}
+.banner-scroll-btn:hover {
+	background-color: rgba(0, 0, 0, 0.6);
+}
+#banner-scroll-left {
+	left: 15px;
+}
+#banner-scroll-right {
+	right: 15px;
 }
 
 

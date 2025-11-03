@@ -15,6 +15,7 @@ html {
 	);
 	scroll-behavior: smooth; 
 	transition: background-color 0.3s;
+	
 }
 
 body {
@@ -24,6 +25,7 @@ body {
 	color: var(--colore-testo);
 	transition: color 0.3s;
 	position: relative; 
+	
 }
 
 main {
@@ -33,61 +35,58 @@ main {
 }
 
 /* =======================================
-   BOLLICINE (FIX Colore e Dimensione)
+   BOLLICINE 
    =======================================
 */
 
-body,
-body[data-theme="light"] {
-	overflow-x: hidden;
-}
-
-body::before,
-body[data-theme="light"]::before {
-	content: '';
+#bubble-canvas {
 	position: fixed;
 	top: 0;
 	left: 0;
-	right: 0;
-	bottom: 0;
+	width: 100%;
+	height: 100%;
 	z-index: -1;
 	
-	/* MODIFICA: Bolle bianche e più grandi 
-	*/
-	background-image: 
-		/* Bolle piccole (5px) - bianche */
-		radial-gradient(circle, rgba(255,255,255,0.5) 5px, transparent 6px),
-		/* Bolle medie (8px) - bianche */
-		radial-gradient(circle, rgba(255,255,255,0.7) 8px, transparent 9px),
-		/* Bolle grandi (12px) - bianche */
-		radial-gradient(circle, rgba(255,255,255,0.4) 12px, transparent 14px);
+	/* Cliccabile "attraverso" */
+	pointer-events: none; 
 	
-	/* Aumentiamo la distanza tra le bolle più grandi */
-	background-size: 
-		100px 100px,
-		150px 150px,
-		200px 200px;
-	
-	animation: bollicine 25s linear infinite;
+	/* Nasconde le bolle che escono dai lati */
+	overflow: hidden; 
 }
 
-body[data-theme="dark"]::before {
+/* 2. Lo stile di base di una singola bolla */
+.bubble {
+	position: absolute;
+	border-radius: 50%;
+	
+	background-color: rgba(255, 255, 255, 0.8); 
+	
+	box-shadow: inset 0 0 10px rgba(255,255,255,1);
+	
+	bottom: -150px; 
+	
+	animation-name: rise-and-drift;
+	animation-timing-function: linear;
+	animation-iteration-count: infinite;
+}
+
+/* 3. L'animazione: sale, va alla deriva e scompare */
+@keyframes rise-and-drift {
+	0% {
+		transform: translateX(0);
+		opacity: 0.9;
+	}
+	80% {
+		opacity: 0.7;
+	}
+	100% {
+		bottom: 110vh; 
+		transform: translateX(var(--horizontal-drift));
+		opacity: 0;
+	}
+}
+
+/* 4. Nasconde le bolle in dark mode */
+html[data-theme="dark"] #bubble-canvas {
 	display: none;
-	content: none;
-}
-
-/* Animazione (invariata, ma ora muove bolle grandi) */
-@keyframes bollicine {
-	from {
-		background-position: 
-			10px 1000px,  
-			50px 1200px,  
-			100px 1050px; 
-	}
-	to {
-		background-position: 
-			10px -1000px,  
-			50px -1300px,  
-			100px -800px; 
-	}
 }

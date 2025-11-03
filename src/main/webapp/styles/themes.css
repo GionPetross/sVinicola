@@ -21,11 +21,15 @@
 }
 
 /*TEMA DARK*/
-body[data-theme="dark"] {
+html[data-theme="dark"] {
 	--colore-sfondo: var(--colore-vino-rosso-scuro); 
 	--colore-testo: var(--colore-vino-bianco-bg); 
 	--colore-accento: var(--colore-rosa-chiaro);
 	--colore-sfondo-etichetta: #2b0116; 
 	--colore-bordo-etichetta: var(--colore-accento-bordeaux);
 	--colore-sfondo-gradiente: rgba(0,0,0,0.2); 
+}
+
+html[data-theme="dark"] .invert-on-dark {
+	filter: invert(1) brightness(1.5) contrast(0.9);
 }

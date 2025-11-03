@@ -348,4 +348,138 @@ public class VinoDAO implements DAOinterface<VinoBean> {
 		}
 		return (result != 0);
 	}
+	
+	public synchronized Collection<VinoBean> doRetrieveByName(String search) throws SQLException {
+        Connection connection = null;
+        PreparedStatement ps = null;
+        Collection<VinoBean> vini = new ArrayList<>();
+        
+        String sql = "SELECT * FROM " + TABLE_NAME + " WHERE Nome LIKE ? AND In_Vendita = true";
+
+        try {
+            connection = DataSourceProvider.getConnection();
+            ps = connection.prepareStatement(sql);
+            ps.setString(1, "%" + search + "%");
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                VinoBean bean = new VinoBean();
+                bean.setIdVino(rs.getInt("ID_Vino"));
+                bean.setNome(rs.getString("Nome"));
+                bean.setAnnata(rs.getInt("Annata"));
+                bean.setTipo(rs.getString("Tipo"));
+                bean.setDescrizione(rs.getString("Descrizione"));
+                bean.setPercentualeAlcolica(rs.getDouble("Percentuale_Alcolica"));
+                bean.setImmagine(rs.getString("Immagine"));
+                bean.setPrezzo(rs.getBigDecimal("Prezzo"));
+                bean.setStock(rs.getInt("Stock"));
+                bean.setFormato(rs.getString("Formato"));
+                bean.setOrigine(rs.getString("Origine"));
+                bean.setInVendita(rs.getBoolean("In_Vendita"));
+                bean.setDataAggiunta(rs.getTimestamp("Data_Aggiunta"));
+                
+                vini.add(bean);
+            }
+
+        } finally {
+            try {
+                if (ps != null) ps.close();
+            } finally {
+                if (connection != null) connection.close();
+            }
+        }
+        return vini;
+    }
+	
+	public synchronized Collection<VinoBean> doRetrieveByOrigine(String origine) throws SQLException {
+        Connection connection = null;
+        PreparedStatement ps = null;
+        Collection<VinoBean> vini = new ArrayList<>();
+
+        String sql = "SELECT * FROM " + TABLE_NAME + " WHERE Origine = ? AND In_Vendita = true";
+
+        try {
+            connection = DataSourceProvider.getConnection();
+            ps = connection.prepareStatement(sql);
+            ps.setString(1, origine);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                VinoBean bean = new VinoBean();
+                bean.setIdVino(rs.getInt("ID_Vino"));
+                bean.setNome(rs.getString("Nome"));
+                bean.setAnnata(rs.getInt("Annata"));
+                bean.setTipo(rs.getString("Tipo"));
+                bean.setDescrizione(rs.getString("Descrizione"));
+                bean.setPercentualeAlcolica(rs.getDouble("Percentuale_Alcolica"));
+                bean.setImmagine(rs.getString("Immagine"));
+                bean.setPrezzo(rs.getBigDecimal("Prezzo"));
+                bean.setStock(rs.getInt("Stock"));
+                bean.setFormato(rs.getString("Formato"));
+                bean.setOrigine(rs.getString("Origine"));
+                bean.setInVendita(rs.getBoolean("In_Vendita"));
+                bean.setDataAggiunta(rs.getTimestamp("Data_Aggiunta"));
+                
+                vini.add(bean);
+            }
+
+        } finally {
+            try {
+                if (ps != null) ps.close();
+            } finally {
+                if (connection != null) connection.close();
+            }
+        }
+        return vini;
+    }
+	
+	
+	public synchronized Collection<VinoBean> doRetrieveByAlcol(double valore, String operatore) throws SQLException {
+        Connection connection = null;
+        PreparedStatement ps = null;
+        Collection<VinoBean> vini = new ArrayList<>();
+
+        if (!operatore.equals(">=") && !operatore.equals("<=")) {
+            throw new SQLException("Operatore non valido per il filtro alcol.");
+        }
+        String sql = "SELECT * FROM " + TABLE_NAME + 
+                     " WHERE Percentuale_Alcolica " + operatore + " ? AND In_Vendita = true";
+
+        try {
+            connection = DataSourceProvider.getConnection();
+            ps = connection.prepareStatement(sql);
+            ps.setDouble(1, valore);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                VinoBean bean = new VinoBean();
+                // Popoliamo TUTTI i campi del bean
+                bean.setIdVino(rs.getInt("ID_Vino"));
+                bean.setNome(rs.getString("Nome"));
+                bean.setAnnata(rs.getInt("Annata"));
+                bean.setTipo(rs.getString("Tipo"));
+                bean.setDescrizione(rs.getString("Descrizione"));
+                bean.setPercentualeAlcolica(rs.getDouble("Percentuale_Alcolica"));
+                bean.setImmagine(rs.getString("Immagine"));
+                bean.setPrezzo(rs.getBigDecimal("Prezzo"));
+                bean.setStock(rs.getInt("Stock"));
+                bean.setFormato(rs.getString("Formato"));
+                bean.setOrigine(rs.getString("Origine"));
+                bean.setInVendita(rs.getBoolean("In_Vendita"));
+                bean.setDataAggiunta(rs.getTimestamp("Data_Aggiunta"));
+                
+                vini.add(bean);
+            }
+
+        } finally {
+            try {
+                if (ps != null) ps.close();
+            } finally {
+                if (connection != null) connection.close();
+            }
+        }
+        return vini;
+    }
 }
