@@ -265,4 +265,29 @@ public class OffertaDAO implements DAOinterface<OffertaBean> {
         }
         return offerte;
     }
+    
+	//Rimuovi tutti i vini associati ad una offerta (ADMIN per il modifica offerta)
+	public synchronized boolean doRemoveAllViniFromOfferta(int idOfferta) throws SQLException {
+		Connection connection = null;
+		PreparedStatement ps = null;
+		int result = 0;
+
+		String sql = "DELETE FROM Applicato WHERE ID_Offerta = ?";
+
+		try {
+			connection = DataSourceProvider.getConnection();
+			ps = connection.prepareStatement(sql);
+			ps.setInt(1, idOfferta);
+
+			result = ps.executeUpdate();
+
+		} finally {
+			try {
+				if (ps != null) ps.close();
+			} finally {
+				if (connection != null) connection.close();
+			}
+		}
+		return (result != 0);
+	}
 }

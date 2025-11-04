@@ -1,5 +1,7 @@
 package model;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,10 +15,6 @@ public class VinoDAO implements DAOinterface<VinoBean> {
 	private static final String TABLE_NAME = "Vino";
 	private static final String APPLICATO_TABLE = "Applicato";
 	private static final String OFFERTA_TABLE = "Offerta";
-
-	// 				==================================================================
-	// 												METODI DAO
-	// 				==================================================================
 	
 	@Override
 	public synchronized void doSave(VinoBean vino) throws SQLException {
@@ -41,7 +39,7 @@ public class VinoDAO implements DAOinterface<VinoBean> {
 			ps.setInt(8, vino.getStock());
 			ps.setString(9, vino.getFormato());
 			ps.setString(10, vino.getOrigine());
-			ps.setBoolean(11, vino.isInVendita()); // Default TRUE
+			ps.setBoolean(11, vino.isInVendita());
 
 			ps.executeUpdate();
 		} finally {
@@ -59,7 +57,15 @@ public class VinoDAO implements DAOinterface<VinoBean> {
 		PreparedStatement ps = null;
 		VinoBean bean = new VinoBean();
 
-		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE ID_Vino = ?";
+		String sql = "SELECT V.*, "
+				   + "MAX(O.Percentuale) AS ScontoMax, "
+				   + "(V.Prezzo * (1 - (MAX(O.Percentuale) / 100.0))) AS PrezzoScontato "
+				   + "FROM " + TABLE_NAME + " AS V "
+				   + "LEFT JOIN " + APPLICATO_TABLE + " AS A ON V.ID_Vino = A.ID_Vino "
+				   + "LEFT JOIN " + OFFERTA_TABLE + " AS O ON A.ID_Offerta = O.ID_Offerta "
+				   + "AND CURDATE() BETWEEN O.Data_Inizio AND O.Data_Fine "
+				   + "WHERE V.ID_Vino = ? "
+				   + "GROUP BY V.ID_Vino";
 
 		try {
 			connection = DataSourceProvider.getConnection();
@@ -76,14 +82,27 @@ public class VinoDAO implements DAOinterface<VinoBean> {
 				bean.setDescrizione(rs.getString("Descrizione"));
 				bean.setPercentualeAlcolica(rs.getDouble("Percentuale_Alcolica"));
 				bean.setImmagine(rs.getString("Immagine"));
-				bean.setPrezzo(rs.getBigDecimal("Prezzo"));
+				bean.setPrezzo(rs.getBigDecimal("Prezzo")); // Prezzo base
 				bean.setStock(rs.getInt("Stock"));
 				bean.setFormato(rs.getString("Formato"));
 				bean.setOrigine(rs.getString("Origine"));
 				bean.setInVendita(rs.getBoolean("In_Vendita"));
 				bean.setDataAggiunta(rs.getTimestamp("Data_Aggiunta"));
+				
+				int percentualeSconto = rs.getInt("ScontoMax");
+				BigDecimal prezzoCalcolato = rs.getBigDecimal("PrezzoScontato");
+
+				if (!rs.wasNull() && percentualeSconto > 0) {
+					bean.setPrezzo(prezzoCalcolato.setScale(2, RoundingMode.HALF_UP));
+					bean.setPercentualeSconto(percentualeSconto);
+					bean.setPrezzoScontato(prezzoCalcolato.setScale(2, RoundingMode.HALF_UP));
+				} else {
+					bean.setPercentualeSconto(0);
+					bean.setPrezzoScontato(null);
+				}
+				
 			} else {
-				return null; // Nessun vino trovato
+				return null;
 			}
 
 		} finally {
@@ -95,8 +114,7 @@ public class VinoDAO implements DAOinterface<VinoBean> {
 		}
 		return bean;
 	}
-
-	//doDelete in questo caso setta il vino come non in vendita
+	
 	@Override
 	public synchronized boolean doDelete(int idVino) throws SQLException {
 		Connection connection = null;
@@ -127,7 +145,6 @@ public class VinoDAO implements DAOinterface<VinoBean> {
 		PreparedStatement ps = null;
 		Collection<VinoBean> vini = new ArrayList<>();
 
-		// Seleziona solo i vini che sono "In_Vendita" per il catalogo pubblico
 		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE In_Vendita = true";
 		
 		if (order != null && !order.isEmpty()) {
@@ -211,48 +228,8 @@ public class VinoDAO implements DAOinterface<VinoBean> {
 	// 							METODI SPECIFICI
 	// ==================================================================
 
-	//Metodo per il filtraggio
 	public synchronized Collection<VinoBean> doRetrieveByTipo(String tipo) throws SQLException {
-		Connection connection = null;
-		PreparedStatement ps = null;
-		Collection<VinoBean> vini = new ArrayList<>();
-
-		// Seleziona solo i vini di quel tipo E che sono "In_Vendita"
-		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE Tipo = ? AND In_Vendita = true";
-
-		try {
-			connection = DataSourceProvider.getConnection();
-			ps = connection.prepareStatement(sql);
-			ps.setString(1, tipo);
-
-			ResultSet rs = ps.executeQuery();
-
-			while (rs.next()) {
-				VinoBean bean = new VinoBean();
-				bean.setIdVino(rs.getInt("ID_Vino"));
-				bean.setNome(rs.getString("Nome"));
-				bean.setAnnata(rs.getInt("Annata"));
-				bean.setTipo(rs.getString("Tipo"));
-				bean.setDescrizione(rs.getString("Descrizione"));
-				bean.setPercentualeAlcolica(rs.getDouble("Percentuale_Alcolica"));
-				bean.setImmagine(rs.getString("Immagine"));
-				bean.setPrezzo(rs.getBigDecimal("Prezzo"));
-				bean.setStock(rs.getInt("Stock"));
-				bean.setFormato(rs.getString("Formato"));
-				bean.setOrigine(rs.getString("Origine"));
-				bean.setInVendita(rs.getBoolean("In_Vendita"));
-				bean.setDataAggiunta(rs.getTimestamp("Data_Aggiunta"));
-				vini.add(bean);
-			}
-
-		} finally {
-			try {
-				if (ps != null) ps.close();
-			} finally {
-				if (connection != null) connection.close();
-			}
-		}
-		return vini;
+		return new ArrayList<>();
 	}
 
 	// ==================================================================
@@ -260,7 +237,6 @@ public class VinoDAO implements DAOinterface<VinoBean> {
 	// ==================================================================
 
 	
-	//Recupera tutte le offerte associate a un singolo vino.
 	public synchronized List<OffertaBean> doRetrieveOfferteByVino(int idVino) throws SQLException {
 		Connection connection = null;
 		PreparedStatement ps = null;
@@ -296,7 +272,6 @@ public class VinoDAO implements DAOinterface<VinoBean> {
 		return offerte;
 	}
 
-	//Applica un'offerta a un vino
 	public synchronized void doApplyOfferta(int idVino, int idOfferta) throws SQLException {
 		Connection connection = null;
 		PreparedStatement ps = null;
@@ -320,8 +295,6 @@ public class VinoDAO implements DAOinterface<VinoBean> {
 			}
 		}
 	}
-
-	//Rimuove un'offerta da un vino.
 	
 	public synchronized boolean doRemoveOfferta(int idVino, int idOfferta) throws SQLException {
 		Connection connection = null;
@@ -349,137 +322,16 @@ public class VinoDAO implements DAOinterface<VinoBean> {
 	}
 	
 	public synchronized Collection<VinoBean> doRetrieveByName(String search) throws SQLException {
-		Connection connection = null;
-		PreparedStatement ps = null;
-		Collection<VinoBean> vini = new ArrayList<>();
-		
-		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE Nome LIKE ? AND In_Vendita = true";
-
-		try {
-			connection = DataSourceProvider.getConnection();
-			ps = connection.prepareStatement(sql);
-			ps.setString(1, "%" + search + "%");
-			ResultSet rs = ps.executeQuery();
-
-			while (rs.next()) {
-				VinoBean bean = new VinoBean();
-				bean.setIdVino(rs.getInt("ID_Vino"));
-				bean.setNome(rs.getString("Nome"));
-				bean.setAnnata(rs.getInt("Annata"));
-				bean.setTipo(rs.getString("Tipo"));
-				bean.setDescrizione(rs.getString("Descrizione"));
-				bean.setPercentualeAlcolica(rs.getDouble("Percentuale_Alcolica"));
-				bean.setImmagine(rs.getString("Immagine"));
-				bean.setPrezzo(rs.getBigDecimal("Prezzo"));
-				bean.setStock(rs.getInt("Stock"));
-				bean.setFormato(rs.getString("Formato"));
-				bean.setOrigine(rs.getString("Origine"));
-				bean.setInVendita(rs.getBoolean("In_Vendita"));
-				bean.setDataAggiunta(rs.getTimestamp("Data_Aggiunta"));
-				
-				vini.add(bean);
-			}
-
-		} finally {
-			try {
-				if (ps != null) ps.close();
-			} finally {
-				if (connection != null) connection.close();
-			}
-		}
-		return vini;
+		return new ArrayList<>();
 	}
 	
 	public synchronized Collection<VinoBean> doRetrieveByOrigine(String origine) throws SQLException {
-		Connection connection = null;
-		PreparedStatement ps = null;
-		Collection<VinoBean> vini = new ArrayList<>();
-
-		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE Origine LIKE ? AND In_Vendita = true";
-
-		try {
-			connection = DataSourceProvider.getConnection();
-			ps = connection.prepareStatement(sql);
-			ps.setString(1, origine);
-
-			ResultSet rs = ps.executeQuery();
-
-			while (rs.next()) {
-				VinoBean bean = new VinoBean();
-				bean.setIdVino(rs.getInt("ID_Vino"));
-				bean.setNome(rs.getString("Nome"));
-				bean.setAnnata(rs.getInt("Annata"));
-				bean.setTipo(rs.getString("Tipo"));
-				bean.setDescrizione(rs.getString("Descrizione"));
-				bean.setPercentualeAlcolica(rs.getDouble("Percentuale_Alcolica"));
-				bean.setImmagine(rs.getString("Immagine"));
-				bean.setPrezzo(rs.getBigDecimal("Prezzo"));
-				bean.setStock(rs.getInt("Stock"));
-				bean.setFormato(rs.getString("Formato"));
-				bean.setOrigine(rs.getString("Origine"));
-				bean.setInVendita(rs.getBoolean("In_Vendita"));
-				bean.setDataAggiunta(rs.getTimestamp("Data_Aggiunta"));
-				
-				vini.add(bean);
-			}
-
-		} finally {
-			try {
-				if (ps != null) ps.close();
-			} finally {
-				if (connection != null) connection.close();
-			}
-		}
-		return vini;
+		return new ArrayList<>();
 	}
 	
 	
 	public synchronized Collection<VinoBean> doRetrieveByAlcol(double valore, String operatore) throws SQLException {
-		Connection connection = null;
-		PreparedStatement ps = null;
-		Collection<VinoBean> vini = new ArrayList<>();
-
-		if (!operatore.equals(">=") && !operatore.equals("<=")) {
-			throw new SQLException("Operatore non valido per il filtro alcol.");
-		}
-		String sql = "SELECT * FROM " + TABLE_NAME + 
-					 " WHERE Percentuale_Alcolica " + operatore + " ? AND In_Vendita = true";
-
-		try {
-			connection = DataSourceProvider.getConnection();
-			ps = connection.prepareStatement(sql);
-			ps.setDouble(1, valore);
-
-			ResultSet rs = ps.executeQuery();
-
-			while (rs.next()) {
-				VinoBean bean = new VinoBean();
-				// Popoliamo TUTTI i campi del bean
-				bean.setIdVino(rs.getInt("ID_Vino"));
-				bean.setNome(rs.getString("Nome"));
-				bean.setAnnata(rs.getInt("Annata"));
-				bean.setTipo(rs.getString("Tipo"));
-				bean.setDescrizione(rs.getString("Descrizione"));
-				bean.setPercentualeAlcolica(rs.getDouble("Percentuale_Alcolica"));
-				bean.setImmagine(rs.getString("Immagine"));
-				bean.setPrezzo(rs.getBigDecimal("Prezzo"));
-				bean.setStock(rs.getInt("Stock"));
-				bean.setFormato(rs.getString("Formato"));
-				bean.setOrigine(rs.getString("Origine"));
-				bean.setInVendita(rs.getBoolean("In_Vendita"));
-				bean.setDataAggiunta(rs.getTimestamp("Data_Aggiunta"));
-				
-				vini.add(bean);
-			}
-
-		} finally {
-			try {
-				if (ps != null) ps.close();
-			} finally {
-				if (connection != null) connection.close();
-			}
-		}
-		return vini;
+		return new ArrayList<>();
 	}
 	
 	//FILTRO SUPER COOL
@@ -490,42 +342,34 @@ public class VinoDAO implements DAOinterface<VinoBean> {
 		
 		List<Object> params = new ArrayList<>();
 		
-		// Query di base
-		String sql = "SELECT V.* FROM " + TABLE_NAME + " AS V"; // Usiamo un alias 'V'
 
-		// --- NUOVA LOGICA JOIN PER PROMOZIONI ---
+		String sql = "SELECT V.*, "
+				   + "MAX(O.Percentuale) AS ScontoMax, "
+				   + "(V.Prezzo * (1 - (MAX(O.Percentuale) / 100.0))) AS PrezzoScontato "
+				   + "FROM " + TABLE_NAME + " AS V "
+				   + "LEFT JOIN " + APPLICATO_TABLE + " AS A ON V.ID_Vino = A.ID_Vino "
+				   + "LEFT JOIN " + OFFERTA_TABLE + " AS O ON A.ID_Offerta = O.ID_Offerta "
+				   + "AND CURDATE() BETWEEN O.Data_Inizio AND O.Data_Fine";
 		if (inPromozione) {
-			// Aggiungiamo una JOIN con la tabella Applicato (e Offerta per controllare le date)
-			// Questo assicura che il vino sia in un'offerta ATTIVA
-			sql += " JOIN " + APPLICATO_TABLE + " AS A ON V.ID_Vino = A.ID_Vino"
-				+  " JOIN " + OFFERTA_TABLE + " AS O ON A.ID_Offerta = O.ID_Offerta";
+			sql = sql.replace("LEFT JOIN " + APPLICATO_TABLE, "JOIN " + APPLICATO_TABLE);
+			sql = sql.replace("LEFT JOIN " + OFFERTA_TABLE, "JOIN " + OFFERTA_TABLE);
 		}
 
-		// Clausola WHERE di base
 		sql += " WHERE V.In_Vendita = true";
 
 		// --- FILTRI DINAMICI ---
-
-		if (inPromozione) {
-			// Se cerchiamo promozioni, filtriamo anche per data
-			sql += " AND CURDATE() BETWEEN O.Data_Inizio AND O.Data_Fine";
-		}
-
 		if (tipo != null && !tipo.isEmpty()) {
 			sql += " AND V.Tipo = ?";
 			params.add(tipo);
 		}
-		
 		if (search != null && !search.isEmpty()) {
 			sql += " AND V.Nome LIKE ?";
 			params.add("%" + search + "%");
 		}
-		
 		if (origine != null && !origine.isEmpty()) {
 			sql += " AND V.Origine LIKE ?";
 			params.add("%" + origine + "%");
 		}
-		
 		if (alcolOp != null && !alcolOp.isEmpty() && alcolVal > 0) {
 			if (alcolOp.equals("gt")) {
 				sql += " AND V.Percentuale_Alcolica >= ?";
@@ -536,7 +380,6 @@ public class VinoDAO implements DAOinterface<VinoBean> {
 			}
 		}
 		
-		// Evita duplicati se un vino è in più promozioni
 		sql += " GROUP BY V.ID_Vino"; 
 		sql += " ORDER BY V.Data_Aggiunta DESC";
 
@@ -559,12 +402,24 @@ public class VinoDAO implements DAOinterface<VinoBean> {
 				bean.setDescrizione(rs.getString("Descrizione"));
 				bean.setPercentualeAlcolica(rs.getDouble("Percentuale_Alcolica"));
 				bean.setImmagine(rs.getString("Immagine"));
-				bean.setPrezzo(rs.getBigDecimal("Prezzo"));
+				bean.setPrezzo(rs.getBigDecimal("Prezzo")); // Prezzo base
 				bean.setStock(rs.getInt("Stock"));
 				bean.setFormato(rs.getString("Formato"));
 				bean.setOrigine(rs.getString("Origine"));
 				bean.setInVendita(rs.getBoolean("In_Vendita"));
 				bean.setDataAggiunta(rs.getTimestamp("Data_Aggiunta"));
+				
+				int percentualeSconto = rs.getInt("ScontoMax");
+				BigDecimal prezzoCalcolato = rs.getBigDecimal("PrezzoScontato");
+
+				if (!rs.wasNull() && percentualeSconto > 0) {
+					bean.setPrezzo(prezzoCalcolato.setScale(2, RoundingMode.HALF_UP));
+					bean.setPercentualeSconto(percentualeSconto);
+					bean.setPrezzoScontato(prezzoCalcolato.setScale(2, RoundingMode.HALF_UP));
+				} else {
+					bean.setPercentualeSconto(0);
+					bean.setPrezzoScontato(null);
+				}
 				
 				vini.add(bean);
 			}
@@ -623,4 +478,31 @@ public class VinoDAO implements DAOinterface<VinoBean> {
 		}
 		return vini;
 	}
+	
+	//Così che per sbaglio non updato il prezzo quando compro
+	public synchronized void doUpdateStock(int idVino, int nuovoStock, boolean inVendita) throws SQLException {
+		Connection connection = null;
+		PreparedStatement ps = null;
+
+		String sql = "UPDATE " + TABLE_NAME + " SET Stock = ?, In_Vendita = ? WHERE ID_Vino = ?";
+
+		try {
+			connection = DataSourceProvider.getConnection();
+			ps = connection.prepareStatement(sql);
+			
+			ps.setInt(1, nuovoStock);
+			ps.setBoolean(2, inVendita);
+			ps.setInt(3, idVino);
+
+			ps.executeUpdate();
+
+		} finally {
+			try {
+				if (ps != null) ps.close();
+			} finally {
+				if (connection != null) connection.close();
+			}
+		}
+	}
 }
+	

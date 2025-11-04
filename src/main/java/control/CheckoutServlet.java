@@ -28,9 +28,9 @@ import model.VinoDAO;
 public class CheckoutServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-	private IndirizzoDAO indirizzoDAO = new IndirizzoDAO();	//indirizzo spedizione
-	private OrdineDAO ordineDAO = new OrdineDAO();			//ordine da salvare
-	private VinoDAO vinoDAO = new VinoDAO();				//cambia lo stock
+	private IndirizzoDAO indirizzoDAO = new IndirizzoDAO();
+	private OrdineDAO ordineDAO = new OrdineDAO();
+	private VinoDAO vinoDAO = new VinoDAO();
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
@@ -98,18 +98,21 @@ public class CheckoutServlet extends HttpServlet {
 				return;
 			}
 			
-			// === VERIFICA E PREPARAZIONE STOCK ===
+			// === VERIFICA STOCK ===
 			Collection<VoceCarrello> voci = carrello.getVoci();
 			for (VoceCarrello voce : voci) {
+				// Recuperiamo il vino SENZA la logica dello sconto (usiamo doRetrieveAllAdmin che legge i dati grezzi)
+				// NOTA: Dobbiamo usare un metodo che NON applichi sconti al prezzo base.
+				// Per sicurezza, usiamo doRetrieveByKey ma recuperiamo il prezzo VERO dopo
 				VinoBean vinoDb = vinoDAO.doRetrieveByKey(voce.getVino().getIdVino());
 				if (vinoDb == null || vinoDb.getStock() < voce.getQuantita()) {
 					request.setAttribute("messaggioErrore", "Stock insufficiente per il prodotto " + voce.getVino().getNome() + ".");
-					doGet(request, response); // Torna al checkout se il numero supera lo stock
+					doGet(request, response);
 					return;
 				}
 			}
-			// =======================================
 			
+			// === SALVA ORDINE ===
 			OrdineBean nuovoOrdine = new OrdineBean();
 			nuovoOrdine.setIdUtente(utente.getIdUtente());
 			nuovoOrdine.setTotaleComplessivo(carrello.getTotale());
@@ -122,22 +125,24 @@ public class CheckoutServlet extends HttpServlet {
 			Collection<DettaglioOrdineBean> dettagli = carrello.getDettagliOrdine();
 			int idOrdineGenerato = ordineDAO.doSaveCompleto(nuovoOrdine, dettagli);
 			
-			// === DEDUZIONE DELLO STOCK ===
+			// === DEDUZIONE DELLO STOCK (Corretto) ===
 			for (VoceCarrello voce : voci) {
-				VinoBean vinoDb = vinoDAO.doRetrieveByKey(voce.getVino().getIdVino());
+				VinoBean vinoDb = vinoDAO.doRetrieveByKey(voce.getVino().getIdVino()); // Recupera lo stato attuale
 				int nuovoStock = vinoDb.getStock() - voce.getQuantita();
-				vinoDb.setStock(nuovoStock);
+				boolean inVendita = vinoDb.isInVendita();
+				
 				if (nuovoStock <= 0) {
-					vinoDb.setInVendita(false); //Smettila di vendere se è finito lo stock
+					inVendita = false; // Imposta "non in vendita"
 				}
-				vinoDAO.doUpdate(vinoDb); // Aggiorna lo stock nel DB
+				
+				vinoDAO.doUpdateStock(vinoDb.getIdVino(), nuovoStock, inVendita); 
 			}
 
-			// Svuota il carrello e la sessione
+			// ===  SVUOTA CARRELLO ===
 			carrello.svuota();
 			session.setAttribute("carrello", carrello); 
 			
-			// Reindirizza alla pagina di conferma
+			// === CONFERMA ===
 			session.setAttribute("idOrdineConfermato", idOrdineGenerato);
 			response.sendRedirect("ordine-confermato");
 

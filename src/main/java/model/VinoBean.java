@@ -15,12 +15,14 @@ public class VinoBean implements Serializable {
 	private String descrizione;
 	private double percentualeAlcolica; // Mappato da DECIMAL(4, 2)
 	private String immagine;
-	private BigDecimal prezzo; // Usiamo BigDecimal per la valuta
+	private BigDecimal prezzo;
 	private int stock;
 	private String formato;
 	private String origine;
 	private boolean inVendita;
 	private Timestamp dataAggiunta;
+	private BigDecimal prezzoScontato;
+    private int percentualeSconto;
 
 	// Costruttore vuoto
 	public VinoBean() {
@@ -36,6 +38,9 @@ public class VinoBean implements Serializable {
 	public int getAnnata() { return annata; }
 	public void setAnnata(int annata) { this.annata = annata; }
 
+	public int getPercentualeSconto() { return percentualeSconto; }
+	public void setPercentualeSconto(int percentualeSconto) { this.percentualeSconto = percentualeSconto; }
+
 	public String getTipo() { return tipo; }
 	public void setTipo(String tipo) { this.tipo = tipo; }
 
@@ -50,6 +55,9 @@ public class VinoBean implements Serializable {
 
 	public BigDecimal getPrezzo() { return prezzo; }
 	public void setPrezzo(BigDecimal prezzo) { this.prezzo = prezzo; }
+	
+	public BigDecimal getPrezzoScontato() { return prezzoScontato; }
+	public void setPrezzoScontato(BigDecimal prezzoScontato) { this.prezzoScontato = prezzoScontato; }
 
 	public int getStock() { return stock; }
 	public void setStock(int stock) { this.stock = stock; }
