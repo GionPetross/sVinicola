@@ -6,13 +6,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+//import java.util.List;
 
 public class UtenteDAO implements DAOinterface<UtenteBean> {
 
 	private static final String TABLE_NAME = "Utente";
-	private static final String PREFERITI_TABLE = "Lista_Preferiti";
-	private static final String VINO_TABLE = "Vino";
+	//private static final String PREFERITI_TABLE = "Lista_Preferiti";
+	//private static final String VINO_TABLE = "Vino";
 
 	// 				==================================================================
 	// 												METODI DAO
@@ -264,10 +264,10 @@ public class UtenteDAO implements DAOinterface<UtenteBean> {
 	}
 
 
-	// ==================================================================
+	/* ==================================================================
 	// METODI PER GESTIONE PREFERITI (Tabella Lista_Preferiti)
 	// ==================================================================
-
+	/
 	//Aggiungere preferiti alla lista
 	public synchronized void doAddPreferito(int idUtente, int idVino) throws SQLException {
 		Connection connection = null;
@@ -391,5 +391,5 @@ public class UtenteDAO implements DAOinterface<UtenteBean> {
 			}
 		}
 		return preferiti;
-	}
+	}*/
 }

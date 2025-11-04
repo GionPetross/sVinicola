@@ -20,7 +20,7 @@ DROP TABLE IF EXISTS Indirizzo;
 DROP TABLE IF EXISTS Vino;
 DROP TABLE IF EXISTS Offerta;
 DROP TABLE IF EXISTS Utente;
-
+--DROP TABLE IF EXISTS Preferiti;
 
 -- Tabelle Utente 
 CREATE TABLE Utente (
@@ -108,6 +108,15 @@ CREATE TABLE Ordine (
         REFERENCES Utente(ID_Utente) ON DELETE NO ACTION
 );
 
+--CREATE TABLE Lista_Preferiti (
+--  ID_Utente INT,
+--  ID_Vino INT,
+--  PRIMARY KEY (ID_Utente, ID_Vino),
+--  CONSTRAINT fk_preferiti_utente FOREIGN KEY (ID_Utente) 
+--      REFERENCES Utente(ID_Utente) ON DELETE CASCADE,
+--  CONSTRAINT fk_preferiti_vino FOREIGN KEY (ID_Vino) 
+--      REFERENCES Vino(ID_Vino) ON DELETE CASCADE
+--);
 
 -- Tabelle Dettaglio Ordini
 CREATE TABLE DettaglioOrdine (
@@ -129,15 +138,12 @@ SET FOREIGN_KEY_CHECKS = 1;
 -- 		Inserimento dati di default/debug
 -- =================================================================
 
--- ERRORE CORRETTO: Ogni INSERT è ora un comando separato che termina con ;
 INSERT INTO Utente (Nome_Utente, Password, Ruolo, Email, Nome, Cognome) VALUES
 ('admin', 'adminpassword', 'admin', 'admin@svinicola.it', 'Admin', 'DelSito');
 
--- Inseriamo l'indirizzo per l'utente 'admin' (che ha ID = 1)
 INSERT INTO Indirizzo (ID_Utente, Via, CAP, Citta, Provincia) VALUES
 (1, 'Via dell Uva, 10', '84100', 'Salerno', 'SA');
 
--- Inseriamo i vini
 INSERT INTO Vino (Nome, Annata, Tipo, Prezzo, Stock, Formato, Origine, In_Vendita) VALUES
 ('Chianti Classico DOCG', 2020, 'Rosso', 15.50, 50, '0.75L', 'Toscana', TRUE),
 ('Bolgheri Rosso Superiore', 2018, 'Rosso', 32.00, 20, '0.75L', 'Toscana', TRUE),
