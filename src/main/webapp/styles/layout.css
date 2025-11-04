@@ -16,7 +16,7 @@ header {
 	display: flex;
 	justify-content: space-between; 
 	align-items: center; 
-	padding: 5px 20px; /* Ridotto padding verticale */
+	padding: 5px 20px;
 	max-width: 1600px;
 	margin: 0 auto;
 }
@@ -27,7 +27,7 @@ header {
 	margin: 0;
 	padding: 0;
 	list-style: none;
-	display: flex; /* Elementi <li> in orizzontale */
+	display: flex;
 	align-items: center; 
 }
 
@@ -40,14 +40,14 @@ header {
 .user-nav a,
 .user-nav .welcome-msg {
 	display: block;
-	padding: 10px 5px; /* Ridotto padding verticale */
+	padding: 10px 5px;
 	text-decoration: none;
 	color: var(--colore-testo);
 	font-weight: bold;
 }
 
 .user-nav .welcome-msg {
-	white-space: nowrap; /* Non manda a capo il nome */
+	white-space: nowrap; 
 }
 
 /* Stile per le icone nell'header */
@@ -94,10 +94,14 @@ header {
 	transition: all 0.3s ease;
 }
 
-/* === Banner Promozioni (Scroll Orizzontale) === */
+/* ==================================================
+   === Banner Promozioni (Logica CSS Semplificata) ===
+   ==================================================
+*/
+
 .promozioni-banner {
 	width: 100%;
-	height: 70vh; /* La tua altezza preferita */
+	height: 65vh; 
 	position: relative; 
 	background-color: var(--colore-sfondo-etichetta);
 }
@@ -106,45 +110,9 @@ header {
 	position: relative;
 	width: 100%;
 	height: 100%;
-	overflow: hidden;
+	overflow: hidden; /* Nasconde le slide non visibili */
 }
 
-.banner-scroll-container {
-	position: relative;
-	width: 100%;
-	height: 100%;
-}
-.banner-card {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	transition: transform 0.6s ease-in-out;
-	transform: translateX(100%); 
-}
-
-/* Slider sinistra/destra */
-
-.banner-card.active {
-	transform: translateX(0);
-	z-index: 10;
-}
-
-.banner-card.exit-left {
-	transform: translateX(-100%);
-	z-index: 5;
-}
-
-.banner-card.exit-right {
-	transform: translateX(100%);
-	z-index: 5;
-}
-
-.banner-card.enter-left {
-	transform: translateX(-100%);
-	z-index: 15;
-}
 
 .banner-card a,
 .banner-card img {
@@ -179,54 +147,110 @@ header {
 	right: 15px;
 }
 
-
-/* === Pulsante per Nascondere/Mostrare Banner === */
-#toggle-banner-btn {
-	position: sticky;
-	top: 55px; /* Adattato alla nuova altezza header */
-	z-index: 999; 
-	
-	display: none;
-	cursor: pointer;
-	padding: 5px 10px;
-	background-color: var(--colore-accento);
-	color: var(--colore-sfondo-etichetta);
-	border: none;
-	border-radius: 0 0 5px 5px;
-	margin-left: 20px;
-}
-
-.banner-nascosto .promozioni-banner {
-	display: none;
-}
-
-.banner-nascosto #toggle-banner-btn {
-	display: inline-block;
-}
-
 /* === BADGE CARELLO === */
 .cart-link-container {
-    position: relative; /* Contenitore per il badge */
-    display: block; /* Assicura che 'position: relative' funzioni */
+    position: relative;
+    display: block;
 }
 
 .cart-badge {
     position: absolute;
-    top: -5px;      /* Sposta in alto */
-    right: -8px;    /* Sposta a destra */
-    
+    top: -5px;      
+    right: -8px;    
     background-color: var(--colore-accento);
-    color: var(--colore-sfondo-etichetta); /* Testo bianco/chiaro */
-    
+    color: var(--colore-sfondo-etichetta);
     width: 18px;
     height: 18px;
-    border-radius: 50%; /* Cerchio perfetto */
-    
-    /* Per centrare il numero */
+    border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    
     font-size: 11px;
     font-weight: bold;
+}
+
+.promozioni-banner {
+	width: 100%;
+	position: relative; 
+	background-color: var(--colore-sfondo-etichetta);
+}
+
+
+.slideshow-container {
+  width: 100%;
+  position: relative;
+  height: 65vh;
+  margin: auto;
+}
+
+.slideshow-container.fallback img {
+	width: 100%;
+	height: 65vh;
+	object-fit: cover;
+}
+
+.mySlides {
+  display: none;
+}
+
+.mySlides img {
+  width: 100%;
+  height: 65vh; 
+  object-fit: cover;
+}
+
+/* Bottoni Prev/Next */
+.prev, .next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  margin-top: -22px;
+  padding: 16px;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.6s ease;
+  user-select: none;
+  z-index: 20;
+}
+
+.prev {
+  left: 0;
+  border-radius: 0 3px 3px 0;
+}
+.next {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+.prev:hover, .next:hover {
+  background-color: rgba(0,0,0,0.8);
+}
+.text {
+  color: #f2f2f2;
+  font-size: 15px;
+  padding: 8px 12px;
+  position: absolute;
+  bottom: 8px;
+  width: 100%;
+  text-align: center;
+}
+.numbertext {
+  color: #f2f2f2;
+  font-size: 12px;
+  padding: 8px 12px;
+  position: absolute;
+  top: 0;
+  background-color: rgba(0,0,0,0.3);
+}
+
+/* Animazione Fade */
+.fade {
+  animation-name: fade;
+  animation-duration: 1.5s;
+}
+
+@keyframes fade {
+  from {opacity: .4}
+  to {opacity: 1}
 }

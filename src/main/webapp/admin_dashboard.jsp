@@ -11,14 +11,14 @@
 	Map<?, ?> mappaUtenti = (Map<?, ?>) request.getAttribute("mappaUtenti");
 	
 	SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-	String contextPath = request.getContextPath(); // Variabile per i path
+	String contextPath = request.getContextPath();
 %>
 
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="viewport" content="width=device-width, initial-scale-1.0">
 	<title>Admin - Dashboard</title>
 	<link rel="stylesheet" type="text/css" href="<%= contextPath %>/styles/main.css">
 </head>
@@ -57,63 +57,76 @@
 			</div>
 		</div>
 
-		<%-- Sezione 2: Ordini "In Attesa" --%>
-		<div class="admin-section">
-			<h2>Ordini da Processare (In Attesa / In Preparazione)</h2>
-			<table class="carrello-tabella">
-				<thead>
-					<tr>
-						<th>ID Ordine</th>
-						<th>Data</th>
-						<th>Cliente</th>
-						<th>Indirizzo Spedizione</th> <%-- Correzione (Problema 2) --%>
-						<th>Totale</th>
-						<th>Stato</th>
-						<th>Azione</th>
-					</tr>
-				</thead>
-				<tbody>
-				<% if (ordiniInAttesa != null && !ordiniInAttesa.isEmpty()) {
-					for (Object obj : ordiniInAttesa) {
-						OrdineBean ordine = (OrdineBean) obj;
-						UtenteBean cliente = (UtenteBean) mappaUtenti.get(ordine.getIdUtente());
-				%>
-					<tr>
-						<td><strong>#<%= ordine.getIdOrdine() %></strong></td>
-						<td><%= dateFormat.format(ordine.getData()) %></td>
-						<td><%= (cliente != null) ? cliente.getNomeUtente() : "ID: " + ordine.getIdUtente() %></td>
-						<td>
-							<%= ordine.getViaSpedizione() %>, <%= ordine.getCapSpedizione() %>, <%= ordine.getCittaSpedizione() %> (<%= ordine.getProvinciaSpedizione() %>)
-						</td>
-						
-						<td><%= ordine.getTotaleComplessivo() %> &euro;</td>
-						<td style="font-weight: bold; color: #cc8400;"><%= ordine.getStato() %></td>
-						<td>
-							<form method="POST" action="<%= contextPath %>/admin/dashboard" style="display: flex; gap: 5px;">
-								<input type="hidden" name="action" value="updateStato">
-								<input type="hidden" name="idOrdine" value="<%= ordine.getIdOrdine() %>">
-								<select name="nuovoStato">
+		<%-- === MODIFICA QUI: Inizio del Form Unico === --%>
+		<form method="POST" action="<%= contextPath %>/admin/dashboard">
+			<div class="admin-section">
+				<h2>Ordini da Processare (In Attesa)</h2>
+				<table class="carrello-tabella">
+					<thead>
+						<tr>
+							<th>ID Ordine</th>
+							<th>Data</th>
+							<th>Cliente</th>
+							<th>Indirizzo Spedizione</th>
+							<th>Totale</th>
+							<th>Stato Attuale</th>
+							<th>Nuovo Stato</th> <%-- Colonna "Azione" rinominata --%>
+						</tr>
+					</thead>
+					<tbody>
+					<% if (ordiniInAttesa != null && !ordiniInAttesa.isEmpty()) {
+						for (Object obj : ordiniInAttesa) {
+							OrdineBean ordine = (OrdineBean) obj;
+							UtenteBean cliente = (UtenteBean) mappaUtenti.get(ordine.getIdUtente());
+					%>
+						<tr>
+							<td><strong>#<%= ordine.getIdOrdine() %></strong></td>
+							<td><%= dateFormat.format(ordine.getData()) %></td>
+							<td><%= (cliente != null) ? cliente.getNomeUtente() : "ID: " + ordine.getIdUtente() %></td>
+							<td>
+								<%= ordine.getViaSpedizione() %>, <%= ordine.getCapSpedizione() %>, <%= ordine.getCittaSpedizione() %> (<%= ordine.getProvinciaSpedizione() %>)
+							</td>
+							<td><%= ordine.getTotaleComplessivo() %> &euro;</td>
+							<td style="font-weight: bold; color: #cc8400;"><%= ordine.getStato() %></td>
+							<td>
+								<%-- 
+								  MODIFICA: 
+								  Rimosso il form.
+								  Il 'name' ora è dinamico (es. "stato-123")
+								  per identificare l'ID dell'ordine.
+								--%>
+								<select name="stato-<%= ordine.getIdOrdine() %>">
 									<% if (ordine.getStato().equals("in attesa")) { %>
-										<option value="in preparazione">In Preparazione</option>
+										<option value="in attesa" selected>In Attesa</option>
+									<% } else { %>
+										<option value="in preparazione" selected>In Preparazione</option>
 									<% } %>
 									<option value="consegnato">Consegnato</option>
 									<option value="annullato">Annullato</option>
 								</select>
-								<button type="submit" class="btn" style="padding: 5px 10px;">Aggiorna</button>
-							</form>
-						</td>
-					</tr>
-				<% 
-					} // fine for
-				} else {
-				%>
-					<tr><td colspan="7" style="text-align: center;">Nessun ordine da processare al momento.</td></tr>
+							</td>
+						</tr>
+					<% 
+						} // fine for
+					} else {
+					%>
+						<tr><td colspan="7" style="text-align: center;">Nessun ordine da processare al momento.</td></tr>
+					<% } %>
+					</tbody>
+				</table>
+				
+				<%-- === MODIFICA QUI: Bottone Unico === --%>
+				<% if (ordiniInAttesa != null && !ordiniInAttesa.isEmpty()) { %>
+				<div style="text-align: right; margin-top: 20px;">
+					<button type="submit" class="btn">Aggiorna Tutti gli Stati</button>
+				</div>
 				<% } %>
-				</tbody>
-			</table>
-		</div>
+			</div>
+		</form>
+		<%-- === MODIFICA QUI: Fine del Form Unico === --%>
 		
-		<%-- Sezione 3: Ordini "Completi" --%>
+		
+		<%-- Sezione 3: Ordini "Completi" (Invariata) --%>
 		<div class="admin-section">
 			<h2>Storico Ordini Completi (Consegnati / Annullati)</h2>
 			<table class="carrello-tabella">
@@ -122,7 +135,7 @@
 						<th>ID Ordine</th>
 						<th>Data</th>
 						<th>Cliente</th>
-						<th>Indirizzo Spedizione</th> <%-- Correzione (Problema 2) --%>
+						<th>Indirizzo Spedizione</th>
 						<th>Totale</th>
 						<th>Stato Finale</th>
 					</tr>

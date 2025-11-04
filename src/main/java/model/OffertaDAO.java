@@ -233,7 +233,6 @@ public class OffertaDAO implements DAOinterface<OffertaBean> {
         PreparedStatement ps = null;
         List<OffertaBean> offerte = new ArrayList<>();
 
-        // Usiamo CURDATE() di SQL per ottenere la data odierna
         String sql = "SELECT * FROM " + TABLE_NAME + " WHERE CURDATE() BETWEEN Data_Inizio AND Data_Fine";
         
         if (order != null && !order.isEmpty()) {

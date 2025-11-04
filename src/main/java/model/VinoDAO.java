@@ -434,6 +434,69 @@ public class VinoDAO implements DAOinterface<VinoBean> {
 		return vini;
 	}
 	
+	//Finalmente, un modo per isolare le offerte!
+	public synchronized Collection<VinoBean> doRetrieveByOfferta(int idOfferta) throws SQLException {
+		Connection connection = null;
+		PreparedStatement ps = null;
+		Collection<VinoBean> vini = new ArrayList<>();
+		String sql = "SELECT V.*, "
+				   + "O.Percentuale AS ScontoMax, "
+				   + "(V.Prezzo * (1 - (O.Percentuale / 100.0))) AS PrezzoScontato "
+				   + "FROM " + TABLE_NAME + " AS V "
+				   + "JOIN " + APPLICATO_TABLE + " AS A ON V.ID_Vino = A.ID_Vino "
+				   + "JOIN " + OFFERTA_TABLE + " AS O ON A.ID_Offerta = O.ID_Offerta "
+				   + "WHERE V.In_Vendita = true "
+				   + "AND O.ID_Offerta = ? "
+				   + "AND CURDATE() BETWEEN O.Data_Inizio AND O.Data_Fine "
+				   + "GROUP BY V.ID_Vino";
+
+		try {
+			connection = DataSourceProvider.getConnection();
+			ps = connection.prepareStatement(sql);
+			ps.setInt(1, idOfferta);
+
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				VinoBean bean = new VinoBean();
+				bean.setIdVino(rs.getInt("ID_Vino"));
+				bean.setNome(rs.getString("Nome"));
+				bean.setAnnata(rs.getInt("Annata"));
+				bean.setTipo(rs.getString("Tipo"));
+				bean.setDescrizione(rs.getString("Descrizione"));
+				bean.setPercentualeAlcolica(rs.getDouble("Percentuale_Alcolica"));
+				bean.setImmagine(rs.getString("Immagine"));
+				bean.setPrezzo(rs.getBigDecimal("Prezzo")); // Prezzo base
+				bean.setStock(rs.getInt("Stock"));
+				bean.setFormato(rs.getString("Formato"));
+				bean.setOrigine(rs.getString("Origine"));
+				bean.setInVendita(rs.getBoolean("In_Vendita"));
+				bean.setDataAggiunta(rs.getTimestamp("Data_Aggiunta"));
+				
+				int percentualeSconto = rs.getInt("ScontoMax");
+				BigDecimal prezzoCalcolato = rs.getBigDecimal("PrezzoScontato");
+
+				if (!rs.wasNull() && percentualeSconto > 0) {
+					bean.setPrezzo(prezzoCalcolato.setScale(2, java.math.RoundingMode.HALF_UP));
+					bean.setPercentualeSconto(percentualeSconto);
+					bean.setPrezzoScontato(prezzoCalcolato.setScale(2, java.math.RoundingMode.HALF_UP));
+				} else {
+					bean.setPercentualeSconto(0);
+					bean.setPrezzoScontato(null);
+				}
+				vini.add(bean);
+			}
+
+		} finally {
+			try {
+				if (ps != null) ps.close();
+			} finally {
+				if (connection != null) connection.close();
+			}
+		}
+		return vini;
+	}
+	
 	public synchronized Collection<VinoBean> doRetrieveAllAdmin(String order) throws SQLException {
 		Connection connection = null;
 		PreparedStatement ps = null;

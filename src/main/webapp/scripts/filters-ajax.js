@@ -58,4 +58,31 @@ document.addEventListener("DOMContentLoaded", function() {
             filtro.addEventListener("change", () => aggiornaCatalogo(false));
         }
     });
+	
+	if (bannerContainer) {
+			bannerContainer.addEventListener("click", function(event) {
+				
+				const bannerLink = event.target.closest(".banner-link");
+				if (!bannerLink) return; // Click non su un link
+				
+				event.preventDefault(); // Impedisce la navigazione
+				
+				const offertaId = bannerLink.dataset.offertaId;
+				if (!offertaId) return;
+				
+				// Pulisce tutti i filtri della sidebar
+				filtriSidebar.forEach(filtro => {
+					if (filtro.type === 'checkbox') filtro.checked = false;
+					else filtro.value = '';
+				});
+				searchInput.value = '';
+				
+				// Crea i parametri SOLO per l'offerta
+				let params = new URLSearchParams();
+				params.append("offerta_id", offertaId);
+				
+				// Chiama l'aggiornamento
+				aggiornaCatalogo(params, false);
+			});
+		}
 });

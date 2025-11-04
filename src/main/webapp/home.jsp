@@ -17,44 +17,61 @@
 	<jsp:include page="/header.jsp" />
 	<main>
 		<section class="promozioni-banner">
-			<div class="banner-scroll-container">
-				<button id="banner-scroll-left" class="banner-scroll-btn">&lt;</button>
+			<%
+				Collection<?> offerte = (Collection<?>) request.getAttribute("offerte");
+				int offertaCount = 0;
 				
-				<div class="banner-scroll-viewport">
-					<div class="banner-scroll-container">
-						
-						<%
-							Collection<?> offerte = (Collection<?>) request.getAttribute("offerte");
-							if (offerte != null && !offerte.isEmpty()) {
-								// Se ci sono offerte, cicala su di esse
-								for (Object obj : offerte) {
-									OffertaBean offerta = (OffertaBean) obj;
-									String imgPromo = offerta.getImmaginePromozionale();
-									
-									if (imgPromo != null && !imgPromo.trim().isEmpty()) {
-						%>
-										<div class="banner-card">
-											<a href="offerta?id=<%= offerta.getIdOfferta() %>">
-												<img src="<%= imgPromo %>" alt="Promozione <%= offerta.getPercentuale() %>%">
-											</a>
-										</div>
-						<%
-									}
-								}
-							} else {
-								// Se non ci sono offerte, mostra il fallback
-						%>
-								<div class="banner-card"> <%-- Inserito in un banner-card per lo slider --%>
-									<img src="images/nessuna_offerta.png" alt="Nessuna offerta disponibile">
-								</div>
-						<%
-							}
-						%>
-						
+				// 1. Contiamo le offerte valide
+				if (offerte != null) {
+					for (Object obj : offerte) {
+						OffertaBean offerta = (OffertaBean) obj;
+						String imgPromo = offerta.getImmaginePromozionale();
+						if (imgPromo != null && !imgPromo.trim().isEmpty()) {
+							offertaCount++;
+						}
+					}
+				}
+				
+				if (offertaCount == 0) {
+			%>
+					<div class="slideshow-container fallback">
+						 <div class="mySlides fade" style="display:block;">
+							 <img src="images/nessuna_offerta.png" alt="Nessuna offerta disponibile">
+						 </div>
 					</div>
-				</div>
-				<button id="banner-scroll-right" class="banner-scroll-btn">&gt;</button>
-			</div>
+			<%
+				} else {
+			%>
+					<%-- Contenitore Slider --%>
+					<div class="slideshow-container">
+			<%
+						int slideCounter = 1;
+						for (Object obj : offerte) {
+							OffertaBean offerta = (OffertaBean) obj;
+							String imgPromo = offerta.getImmaginePromozionale();
+							
+							if (imgPromo != null && !imgPromo.trim().isEmpty()) {
+			%>
+								<div class="mySlides fade">
+									<div class="numbertext"><%= slideCounter %> / <%= offertaCount %></div>
+									<a href="home?offerta_id=<%= offerta.getIdOfferta() %>" 
+									   class="banner-link" 
+									   data-offerta-id="<%= offerta.getIdOfferta() %>">
+										<img src="<%= imgPromo %>" alt="Promozione <%= offerta.getPercentuale() %>%">
+									</a>
+								</div>
+			<%
+								slideCounter++;
+							}
+						}
+			%>
+						<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+						<a class="next" onclick="plusSlides(1)">&#10095;</a>
+					</div>
+					
+			<%
+				} 
+			%>
 		</section>
 		<h2 id="catalogo-start">Il nostro Catalogo</h2>
 		
