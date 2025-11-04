@@ -3,6 +3,7 @@
 <%@ page import="model.Carrello" %>
 <%
 	UtenteBean utente = (UtenteBean) session.getAttribute("utente");
+	String contextPath = request.getContextPath(); // Variabile per pulizia
 %>
 <header>
 	<div class="header-container">
@@ -14,18 +15,16 @@
 		</button>
 		
 		<div class="logo">
-			<a href="home">
-				<%-- MODIFICA: Aggiunta classe per l'inversione in dark mode --%>
-				<img src="images/logo.png" alt="sVinicola Logo" class="header-logo-img invert-on-dark">
+			<a href="<%= contextPath %>/home">
+				<img src="<%= contextPath %>/images/logo.png" alt="sVinicola Logo" class="header-logo-img invert-on-dark">
 			</a>
 		</div>
 		
 		<nav class="main-nav">
             <ul>
                 <li class="nav-search-bar">
-                    <form action="home" method="GET" class="filter-form">
+                    <form action="<%= contextPath %>/home" method="GET" class="filter-form">
                         <input type="text" name="search" placeholder="Cerca un vino...">
-                        <%-- Pulsante submit rimosso --%>
                     </form>
                 </li>
             </ul>
@@ -40,10 +39,9 @@
 				</li>
 				
 				<li>
-					<a href="carrello" class="header-icon-link cart-link-container">
-                        <img src="images/carrello.png" alt="Carrello" class="header-icon-img invert-on-dark">
+					<a href="<%= contextPath %>/carrello" class="header-icon-link cart-link-container">
+                        <img src="<%= contextPath %>/images/carrello.png" alt="Carrello" class="header-icon-img invert-on-dark">
                         
-                        <%-- === BADGE CONTATORE === --%>
                         <%
                             Carrello carrello = (Carrello) session.getAttribute("carrello");
                             if (carrello != null && !carrello.isEmpty()) {
@@ -58,26 +56,26 @@
 				<%
 					if (utente == null) {
 				%>
-					<li><a href="login.jsp">Login</a></li>
-					<li><a href="registrazione.jsp">Registrati</a></li>
+					<li><a href="<%= contextPath %>/login.jsp">Login</a></li>
+					<li><a href="<%= contextPath %>/registrazione.jsp">Registrati</a></li>
 				<%
 					} else {
 				%>
-					<li class="welcome-msg"><a href="area_personale">Ben Tornato, </a><%= utente.getNomeUtente() %></li>
+					<li class="welcome-msg"><a href="<%= contextPath %>/area_personale">Ben Tornato, <%= utente.getNomeUtente() %></a></li>
 					
 					<%
 						if (utente.getRuolo().equals("admin")) {
 					%>
-						<li><a href="admin/dashboard">Pannello Admin</a></li>
+						<li><a href="<%= contextPath %>/admin/dashboard">Pannello Admin</a></li>
 					<%
 						} else {
 					%>
-						<li><a href="storico-ordini">I Miei Ordini</a></li>
+						<li><a href="<%= contextPath %>/storico-ordini">I Miei Ordini</a></li>
 					<%
 						}
 					%>
 					
-					<li><a href="logout">Logout</a></li>
+					<li><a href="<%= contextPath %>/logout">Logout</a></li>
 				<%
 					}
 				%>
@@ -90,6 +88,8 @@
     <button id="sidebar-close-btn" class="sidebar-close">&times;</button>
     <h3>Filtri Catalogo</h3>
 
+    <%-- AJAX filter --%>
+    
     <div class="filter-group">
         <h4>Tipo di Vino</h4>
         <select id="filtro-tipo" name="tipo" class="filtro-campo">

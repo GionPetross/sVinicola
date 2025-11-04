@@ -6,4 +6,4 @@
 		<p>Progetto per il corso di TSW. Studente: Giulio Ion Petrossi</p>
 	</div>
 </footer>
-<script src="scripts/main.js"></script>
+<script src="<%= request.getContextPath() %>/scripts/main.js"></script>

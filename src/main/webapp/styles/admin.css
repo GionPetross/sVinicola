@@ -1,0 +1,81 @@
+@charset "UTF-8";
+.admin-container { 
+	max-width: 1400px; 
+	margin: 40px auto; 
+	padding: 20px; 
+}
+
+.admin-section { 
+	background-color: var(--colore-sfondo-etichetta); 
+	padding: 20px; 
+	margin-bottom: 30px; 
+	border-radius: 8px; 
+	box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+}
+
+.admin-section h2 { 
+	margin-top: 0; 
+}
+
+.admin-quick-links { 
+	display: flex; 
+	gap: 15px; 
+	margin-bottom: 20px; 
+}
+
+.admin-section .form-group select,
+.admin-section .form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--colore-bordo-etichetta);
+    border-radius: 4px;
+    box-sizing: border-box; 
+    
+    background-color: var(--colore-sfondo); 
+    color: var(--colore-testo);
+    font-family: inherit; 
+    font-size: 1rem;
+}
+
+.admin-action-btn {
+	display: inline-block;
+	padding: 6px 12px;
+	border-radius: 4px;
+	text-decoration: none;
+	font-weight: bold;
+	font-size: 0.9rem;
+	cursor: pointer;
+	text-align: center;
+	transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+	border: 1px solid transparent;
+}
+
+
+
+
+.admin-action-edit,
+.admin-action-enable {
+	background-color: transparent;
+	color: var(--colore-accento);
+	border-color: var(--colore-bordo-etichetta);
+}
+.admin-action-edit:hover,
+.admin-action-enable:hover {
+	background-color: var(--colore-rosa-chiaro);
+	border-color: var(--colore-accento);
+	color: var(--colore-vino-rosso-scuro);
+}
+
+
+
+.admin-action-disable {
+	background-color: transparent;
+	color: var(--colore-accento-bordeaux);
+	border-color: transparent;
+}
+
+.admin-action-disable:hover {
+	color: white;
+	background-color: var(--colore-accento-bordeaux);
+	border-color: var(--colore-accento-bordeaux);
+}

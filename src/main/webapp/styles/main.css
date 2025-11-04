@@ -6,8 +6,10 @@
 @import url('product-card.css');
 @import url('form.css');
 @import url('carrello.css');
+@import url('admin.css');
+@import url('dettaglio.css');
 
-html {
+html{
 	background-color: var(--colore-sfondo);
 	background-image: linear-gradient(to right, 
 		var(--colore-sfondo-gradiente), 

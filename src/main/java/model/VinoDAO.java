@@ -578,4 +578,49 @@ public class VinoDAO implements DAOinterface<VinoBean> {
 		}
 		return vini;
 	}
+	
+	public synchronized Collection<VinoBean> doRetrieveAllAdmin(String order) throws SQLException {
+		Connection connection = null;
+		PreparedStatement ps = null;
+		Collection<VinoBean> vini = new ArrayList<>();
+
+		String sql = "SELECT * FROM " + TABLE_NAME;
+		
+		if (order != null && !order.isEmpty()) {
+			sql += " ORDER BY " + order;
+		}
+
+		try {
+			connection = DataSourceProvider.getConnection();
+			ps = connection.prepareStatement(sql);
+
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				VinoBean bean = new VinoBean();
+				bean.setIdVino(rs.getInt("ID_Vino"));
+				bean.setNome(rs.getString("Nome"));
+				bean.setAnnata(rs.getInt("Annata"));
+				bean.setTipo(rs.getString("Tipo"));
+				bean.setDescrizione(rs.getString("Descrizione"));
+				bean.setPercentualeAlcolica(rs.getDouble("Percentuale_Alcolica"));
+				bean.setImmagine(rs.getString("Immagine"));
+				bean.setPrezzo(rs.getBigDecimal("Prezzo"));
+				bean.setStock(rs.getInt("Stock"));
+				bean.setFormato(rs.getString("Formato"));
+				bean.setOrigine(rs.getString("Origine"));
+				bean.setInVendita(rs.getBoolean("In_Vendita"));
+				bean.setDataAggiunta(rs.getTimestamp("Data_Aggiunta"));
+				vini.add(bean);
+			}
+
+		} finally {
+			try {
+				if (ps != null) ps.close();
+			} finally {
+				if (connection != null) connection.close();
+			}
+		}
+		return vini;
+	}
 }
