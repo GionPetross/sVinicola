@@ -11,7 +11,7 @@
 	--colore-vino-bianco-bg: #f4f0e6;  
 	--colore-etichetta-carta: #fdfbf5; 
 	
-	/*TEMA LIGHT*/
+		/*TEMA LIGHT*/
 	--colore-sfondo: var(--colore-vino-bianco-bg); 
 	--colore-testo: var(--colore-vino-rosso-medio); 
 	--colore-accento: var(--colore-accento-bordeaux);
@@ -20,7 +20,7 @@
 	--colore-sfondo-gradiente: rgba(0,0,0,0.05); 
 }
 
-/*TEMA DARK*/
+		/*TEMA DARK*/
 html[data-theme="dark"] {
 	--colore-sfondo: var(--colore-vino-rosso-scuro); 
 	--colore-testo: var(--colore-vino-bianco-bg); 

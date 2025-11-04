@@ -1,0 +1,85 @@
+@charset "UTF-8";
+.form-container {
+    max-width: 500px;
+    margin: 40px auto; 
+    padding: 30px;
+    background-color: var(--colore-sfondo-etichetta);
+    
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.form-group {
+    margin-bottom: 22px; 
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    color: var(--colore-testo);
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--colore-bordo-etichetta);
+    border-radius: 4px;
+    box-sizing: border-box;
+    background-color: var(--colore-sfondo); 
+    color: var(--colore-testo);
+}
+
+
+.error-message {
+    color: var(--colore-accento); 
+    font-size: 0.9rem;
+    margin-top: 5px; 
+    min-height: 1.2em; 
+}
+
+/* Stile per l'input QUANDO è in errore */
+.input-errore {
+    border-color: var(--colore-accento) !important; 
+    background-color: rgba(122, 64, 68, 0.1); 
+}
+
+/* Messaggi di errore/successo */
+.error-message-global {
+    background-color: var(--colore-accento-bordeaux);
+    color: var(--colore-vino-bianco-bg); /* Testo chiaro */
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.success-message-global {
+    background-color: #4CAF50; /* Verde per il successo */
+    color: white;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Stile per i bottoni */
+.form-container .btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    background-color: var(--colore-accento);
+    color: var(--colore-sfondo-etichetta);
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.form-container .btn:hover {
+    background-color: var(--colore-vino-rosso-scuro);
+}

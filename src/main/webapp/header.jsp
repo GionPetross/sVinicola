@@ -3,7 +3,6 @@
 <%
 	UtenteBean utente = (UtenteBean) session.getAttribute("utente");
 %>
-
 <header>
 	<div class="header-container">
 		
@@ -21,10 +20,15 @@
 		</div>
 		
 		<nav class="main-nav">
-			<ul>
-				<li><a href="#catalogo-start">Catalogo</a></li>
-			</ul>
-		</nav>
+            <ul>
+                <li class="nav-search-bar">
+                    <form action="home" method="GET" class="filter-form">
+                        <input type="text" name="search" placeholder="Cerca un vino...">
+                        <%-- Pulsante submit rimosso --%>
+                    </form>
+                </li>
+            </ul>
+        </nav>
 		
 		<div class="user-nav">
 			<ul>
@@ -72,16 +76,41 @@
 </header>
 
 <div class="sidebar">
-    <%-- NUOVO: Bottone per chiudere la sidebar --%>
     <button id="sidebar-close-btn" class="sidebar-close">&times;</button>
-
     <h3>Filtri Catalogo</h3>
 
     <div class="filter-group">
         <h4>Tipo di Vino</h4>
-        <a href="catalogo?tipo=Rosso">Vini Rossi</a><br>
-        <a href="catalogo?tipo=Bianco">Vini Bianchi</a><br>
-        <a href="catalogo?tipo=Rosé">Vini Rosé</a><br>
-        <a href="catalogo?tipo=Spumante">Spumanti</a><br>
+        <select id="filtro-tipo" name="tipo" class="filtro-campo">
+            <option value="">Tutti i tipi</option>
+            <option value="Rosso">Vini Rossi</option>
+            <option value="Bianco">Vini Bianchi</option>
+            <option value="Rosé">Vini Rosé</option>
+            <option value="Spumante">Spumanti</option>
+            <option value="Dolce">Vini Dolci</option>
+        </select>
+    </div>
+    
+    <div class="filter-group">
+        <h4>Regione</h4>
+        <input type="text" id="filtro-origine" name="origine" class="filtro-campo" placeholder="Es. Toscana...">
+    </div>
+    
+    <div class="filter-group">
+        <h4>Percentuale Alcolica</h4>
+        <select id="filtro-alcol-op" name="alcol_op" class="filtro-campo">
+            <option value="">Qualsiasi</option>
+            <option value="gt">Maggiore di</option>
+            <option value="lt">Minore di</option>
+        </select>
+        <input type="number" id="filtro-alcol-val" name="alcol_val" class="filtro-campo" step="0.1" placeholder="13.5" style="width: 60px;">
+    </div>
+    
+    <div class="filter-group">
+        <h4>Offerte</h4>
+        <label class="checkbox-label">
+            <input type="checkbox" id="filtro-promozione" name="in_promozione" value="true" class="filtro-campo">
+            Solo vini in promozione
+        </label>
     </div>
 </div>

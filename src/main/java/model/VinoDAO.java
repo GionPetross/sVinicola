@@ -350,136 +350,233 @@ public class VinoDAO implements DAOinterface<VinoBean> {
 	}
 	
 	public synchronized Collection<VinoBean> doRetrieveByName(String search) throws SQLException {
-        Connection connection = null;
-        PreparedStatement ps = null;
-        Collection<VinoBean> vini = new ArrayList<>();
-        
-        String sql = "SELECT * FROM " + TABLE_NAME + " WHERE Nome LIKE ? AND In_Vendita = true";
+		Connection connection = null;
+		PreparedStatement ps = null;
+		Collection<VinoBean> vini = new ArrayList<>();
+		
+		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE Nome LIKE ? AND In_Vendita = true";
 
-        try {
-            connection = DataSourceProvider.getConnection();
-            ps = connection.prepareStatement(sql);
-            ps.setString(1, "%" + search + "%");
-            ResultSet rs = ps.executeQuery();
+		try {
+			connection = DataSourceProvider.getConnection();
+			ps = connection.prepareStatement(sql);
+			ps.setString(1, "%" + search + "%");
+			ResultSet rs = ps.executeQuery();
 
-            while (rs.next()) {
-                VinoBean bean = new VinoBean();
-                bean.setIdVino(rs.getInt("ID_Vino"));
-                bean.setNome(rs.getString("Nome"));
-                bean.setAnnata(rs.getInt("Annata"));
-                bean.setTipo(rs.getString("Tipo"));
-                bean.setDescrizione(rs.getString("Descrizione"));
-                bean.setPercentualeAlcolica(rs.getDouble("Percentuale_Alcolica"));
-                bean.setImmagine(rs.getString("Immagine"));
-                bean.setPrezzo(rs.getBigDecimal("Prezzo"));
-                bean.setStock(rs.getInt("Stock"));
-                bean.setFormato(rs.getString("Formato"));
-                bean.setOrigine(rs.getString("Origine"));
-                bean.setInVendita(rs.getBoolean("In_Vendita"));
-                bean.setDataAggiunta(rs.getTimestamp("Data_Aggiunta"));
-                
-                vini.add(bean);
-            }
+			while (rs.next()) {
+				VinoBean bean = new VinoBean();
+				bean.setIdVino(rs.getInt("ID_Vino"));
+				bean.setNome(rs.getString("Nome"));
+				bean.setAnnata(rs.getInt("Annata"));
+				bean.setTipo(rs.getString("Tipo"));
+				bean.setDescrizione(rs.getString("Descrizione"));
+				bean.setPercentualeAlcolica(rs.getDouble("Percentuale_Alcolica"));
+				bean.setImmagine(rs.getString("Immagine"));
+				bean.setPrezzo(rs.getBigDecimal("Prezzo"));
+				bean.setStock(rs.getInt("Stock"));
+				bean.setFormato(rs.getString("Formato"));
+				bean.setOrigine(rs.getString("Origine"));
+				bean.setInVendita(rs.getBoolean("In_Vendita"));
+				bean.setDataAggiunta(rs.getTimestamp("Data_Aggiunta"));
+				
+				vini.add(bean);
+			}
 
-        } finally {
-            try {
-                if (ps != null) ps.close();
-            } finally {
-                if (connection != null) connection.close();
-            }
-        }
-        return vini;
-    }
+		} finally {
+			try {
+				if (ps != null) ps.close();
+			} finally {
+				if (connection != null) connection.close();
+			}
+		}
+		return vini;
+	}
 	
 	public synchronized Collection<VinoBean> doRetrieveByOrigine(String origine) throws SQLException {
-        Connection connection = null;
-        PreparedStatement ps = null;
-        Collection<VinoBean> vini = new ArrayList<>();
+		Connection connection = null;
+		PreparedStatement ps = null;
+		Collection<VinoBean> vini = new ArrayList<>();
 
-        String sql = "SELECT * FROM " + TABLE_NAME + " WHERE Origine = ? AND In_Vendita = true";
+		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE Origine LIKE ? AND In_Vendita = true";
 
-        try {
-            connection = DataSourceProvider.getConnection();
-            ps = connection.prepareStatement(sql);
-            ps.setString(1, origine);
+		try {
+			connection = DataSourceProvider.getConnection();
+			ps = connection.prepareStatement(sql);
+			ps.setString(1, origine);
 
-            ResultSet rs = ps.executeQuery();
+			ResultSet rs = ps.executeQuery();
 
-            while (rs.next()) {
-                VinoBean bean = new VinoBean();
-                bean.setIdVino(rs.getInt("ID_Vino"));
-                bean.setNome(rs.getString("Nome"));
-                bean.setAnnata(rs.getInt("Annata"));
-                bean.setTipo(rs.getString("Tipo"));
-                bean.setDescrizione(rs.getString("Descrizione"));
-                bean.setPercentualeAlcolica(rs.getDouble("Percentuale_Alcolica"));
-                bean.setImmagine(rs.getString("Immagine"));
-                bean.setPrezzo(rs.getBigDecimal("Prezzo"));
-                bean.setStock(rs.getInt("Stock"));
-                bean.setFormato(rs.getString("Formato"));
-                bean.setOrigine(rs.getString("Origine"));
-                bean.setInVendita(rs.getBoolean("In_Vendita"));
-                bean.setDataAggiunta(rs.getTimestamp("Data_Aggiunta"));
-                
-                vini.add(bean);
-            }
+			while (rs.next()) {
+				VinoBean bean = new VinoBean();
+				bean.setIdVino(rs.getInt("ID_Vino"));
+				bean.setNome(rs.getString("Nome"));
+				bean.setAnnata(rs.getInt("Annata"));
+				bean.setTipo(rs.getString("Tipo"));
+				bean.setDescrizione(rs.getString("Descrizione"));
+				bean.setPercentualeAlcolica(rs.getDouble("Percentuale_Alcolica"));
+				bean.setImmagine(rs.getString("Immagine"));
+				bean.setPrezzo(rs.getBigDecimal("Prezzo"));
+				bean.setStock(rs.getInt("Stock"));
+				bean.setFormato(rs.getString("Formato"));
+				bean.setOrigine(rs.getString("Origine"));
+				bean.setInVendita(rs.getBoolean("In_Vendita"));
+				bean.setDataAggiunta(rs.getTimestamp("Data_Aggiunta"));
+				
+				vini.add(bean);
+			}
 
-        } finally {
-            try {
-                if (ps != null) ps.close();
-            } finally {
-                if (connection != null) connection.close();
-            }
-        }
-        return vini;
-    }
+		} finally {
+			try {
+				if (ps != null) ps.close();
+			} finally {
+				if (connection != null) connection.close();
+			}
+		}
+		return vini;
+	}
 	
 	
 	public synchronized Collection<VinoBean> doRetrieveByAlcol(double valore, String operatore) throws SQLException {
-        Connection connection = null;
-        PreparedStatement ps = null;
-        Collection<VinoBean> vini = new ArrayList<>();
+		Connection connection = null;
+		PreparedStatement ps = null;
+		Collection<VinoBean> vini = new ArrayList<>();
 
-        if (!operatore.equals(">=") && !operatore.equals("<=")) {
-            throw new SQLException("Operatore non valido per il filtro alcol.");
-        }
-        String sql = "SELECT * FROM " + TABLE_NAME + 
-                     " WHERE Percentuale_Alcolica " + operatore + " ? AND In_Vendita = true";
+		if (!operatore.equals(">=") && !operatore.equals("<=")) {
+			throw new SQLException("Operatore non valido per il filtro alcol.");
+		}
+		String sql = "SELECT * FROM " + TABLE_NAME + 
+					 " WHERE Percentuale_Alcolica " + operatore + " ? AND In_Vendita = true";
 
-        try {
-            connection = DataSourceProvider.getConnection();
-            ps = connection.prepareStatement(sql);
-            ps.setDouble(1, valore);
+		try {
+			connection = DataSourceProvider.getConnection();
+			ps = connection.prepareStatement(sql);
+			ps.setDouble(1, valore);
 
-            ResultSet rs = ps.executeQuery();
+			ResultSet rs = ps.executeQuery();
 
-            while (rs.next()) {
-                VinoBean bean = new VinoBean();
-                // Popoliamo TUTTI i campi del bean
-                bean.setIdVino(rs.getInt("ID_Vino"));
-                bean.setNome(rs.getString("Nome"));
-                bean.setAnnata(rs.getInt("Annata"));
-                bean.setTipo(rs.getString("Tipo"));
-                bean.setDescrizione(rs.getString("Descrizione"));
-                bean.setPercentualeAlcolica(rs.getDouble("Percentuale_Alcolica"));
-                bean.setImmagine(rs.getString("Immagine"));
-                bean.setPrezzo(rs.getBigDecimal("Prezzo"));
-                bean.setStock(rs.getInt("Stock"));
-                bean.setFormato(rs.getString("Formato"));
-                bean.setOrigine(rs.getString("Origine"));
-                bean.setInVendita(rs.getBoolean("In_Vendita"));
-                bean.setDataAggiunta(rs.getTimestamp("Data_Aggiunta"));
-                
-                vini.add(bean);
-            }
+			while (rs.next()) {
+				VinoBean bean = new VinoBean();
+				// Popoliamo TUTTI i campi del bean
+				bean.setIdVino(rs.getInt("ID_Vino"));
+				bean.setNome(rs.getString("Nome"));
+				bean.setAnnata(rs.getInt("Annata"));
+				bean.setTipo(rs.getString("Tipo"));
+				bean.setDescrizione(rs.getString("Descrizione"));
+				bean.setPercentualeAlcolica(rs.getDouble("Percentuale_Alcolica"));
+				bean.setImmagine(rs.getString("Immagine"));
+				bean.setPrezzo(rs.getBigDecimal("Prezzo"));
+				bean.setStock(rs.getInt("Stock"));
+				bean.setFormato(rs.getString("Formato"));
+				bean.setOrigine(rs.getString("Origine"));
+				bean.setInVendita(rs.getBoolean("In_Vendita"));
+				bean.setDataAggiunta(rs.getTimestamp("Data_Aggiunta"));
+				
+				vini.add(bean);
+			}
 
-        } finally {
-            try {
-                if (ps != null) ps.close();
-            } finally {
-                if (connection != null) connection.close();
-            }
-        }
-        return vini;
-    }
+		} finally {
+			try {
+				if (ps != null) ps.close();
+			} finally {
+				if (connection != null) connection.close();
+			}
+		}
+		return vini;
+	}
+	
+	//FILTRO SUPER COOL
+	public synchronized Collection<VinoBean> doRetrieveByFilters(String tipo, String search, String origine, String alcolOp, double alcolVal, boolean inPromozione) throws SQLException {
+		Connection connection = null;
+		PreparedStatement ps = null;
+		Collection<VinoBean> vini = new ArrayList<>();
+		
+		List<Object> params = new ArrayList<>();
+		
+		// Query di base
+		String sql = "SELECT V.* FROM " + TABLE_NAME + " AS V"; // Usiamo un alias 'V'
+
+		// --- NUOVA LOGICA JOIN PER PROMOZIONI ---
+		if (inPromozione) {
+			// Aggiungiamo una JOIN con la tabella Applicato (e Offerta per controllare le date)
+			// Questo assicura che il vino sia in un'offerta ATTIVA
+			sql += " JOIN " + APPLICATO_TABLE + " AS A ON V.ID_Vino = A.ID_Vino"
+				+  " JOIN " + OFFERTA_TABLE + " AS O ON A.ID_Offerta = O.ID_Offerta";
+		}
+
+		// Clausola WHERE di base
+		sql += " WHERE V.In_Vendita = true";
+
+		// --- FILTRI DINAMICI ---
+
+		if (inPromozione) {
+			// Se cerchiamo promozioni, filtriamo anche per data
+			sql += " AND CURDATE() BETWEEN O.Data_Inizio AND O.Data_Fine";
+		}
+
+		if (tipo != null && !tipo.isEmpty()) {
+			sql += " AND V.Tipo = ?";
+			params.add(tipo);
+		}
+		
+		if (search != null && !search.isEmpty()) {
+			sql += " AND V.Nome LIKE ?";
+			params.add("%" + search + "%");
+		}
+		
+		if (origine != null && !origine.isEmpty()) {
+			sql += " AND V.Origine LIKE ?";
+			params.add("%" + origine + "%");
+		}
+		
+		if (alcolOp != null && !alcolOp.isEmpty() && alcolVal > 0) {
+			if (alcolOp.equals("gt")) {
+				sql += " AND V.Percentuale_Alcolica >= ?";
+				params.add(alcolVal);
+			} else if (alcolOp.equals("lt")) {
+				sql += " AND V.Percentuale_Alcolica <= ?";
+				params.add(alcolVal);
+			}
+		}
+		
+		// Evita duplicati se un vino è in più promozioni
+		sql += " GROUP BY V.ID_Vino"; 
+		sql += " ORDER BY V.Data_Aggiunta DESC";
+
+		try {
+			connection = DataSourceProvider.getConnection();
+			ps = connection.prepareStatement(sql);
+			
+			for (int i = 0; i < params.size(); i++) {
+				ps.setObject(i + 1, params.get(i));
+			}
+
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				VinoBean bean = new VinoBean();
+				bean.setIdVino(rs.getInt("ID_Vino"));
+				bean.setNome(rs.getString("Nome"));
+				bean.setAnnata(rs.getInt("Annata"));
+				bean.setTipo(rs.getString("Tipo"));
+				bean.setDescrizione(rs.getString("Descrizione"));
+				bean.setPercentualeAlcolica(rs.getDouble("Percentuale_Alcolica"));
+				bean.setImmagine(rs.getString("Immagine"));
+				bean.setPrezzo(rs.getBigDecimal("Prezzo"));
+				bean.setStock(rs.getInt("Stock"));
+				bean.setFormato(rs.getString("Formato"));
+				bean.setOrigine(rs.getString("Origine"));
+				bean.setInVendita(rs.getBoolean("In_Vendita"));
+				bean.setDataAggiunta(rs.getTimestamp("Data_Aggiunta"));
+				
+				vini.add(bean);
+			}
+
+		} finally {
+			try {
+				if (ps != null) ps.close();
+			} finally {
+				if (connection != null) connection.close();
+			}
+		}
+		return vini;
+	}
 }

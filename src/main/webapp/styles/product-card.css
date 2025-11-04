@@ -47,7 +47,7 @@
 	pointer-events: none;
 }
 
-.product-card .image-container a:hover + .hover-overlay {
+.product-card .image-container:hover .hover-overlay {
 	opacity: 1;
 }
 
@@ -111,10 +111,10 @@
 	display: none;
 }
 
-.product-purchase-bar .btn-aggiungi .icon-cart {
+.product-purchase-bar .btn-aggiungi .icon-cart img {
 	display: block;
-	height: 24px;
-	width: auto;
+	height: 24px;  
+	width: auto;   
 }
 
 .product-purchase-bar .btn-aggiungi:hover .text-cart {

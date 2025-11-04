@@ -2,16 +2,24 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	// --- Gestione Cambio Tema ---
 	const themeToggleBtn = document.getElementById("theme-toggle-btn");
-	
+	const htmlTag = document.documentElement; // Seleziona il tag <html>
+
+	const savedTheme = localStorage.getItem("theme");
+	if (savedTheme) {
+		htmlTag.setAttribute("data-theme", savedTheme);
+	}
+
 	themeToggleBtn.addEventListener("click", function() {
-		const htmlTag = document.documentElement; 
 		let currentTheme = htmlTag.getAttribute("data-theme");
-		
+		let newTheme;
+
 		if (currentTheme === "dark") {
-			htmlTag.setAttribute("data-theme", "light");
+			newTheme = "light";
 		} else {
-			htmlTag.setAttribute("data-theme", "dark");
+			newTheme = "dark"; 
 		}
+		htmlTag.setAttribute("data-theme", newTheme);
+		localStorage.setItem("theme", newTheme);
 	});
 	
 
