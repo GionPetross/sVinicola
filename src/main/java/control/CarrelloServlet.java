@@ -34,7 +34,7 @@ public class CarrelloServlet extends HttpServlet {
 		
 		String action = request.getParameter("action");
 		
-		// IMPLEMENTAZIONE JSON
+		// JSON-Java
 		JSONObject jsonResponse = new JSONObject();
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
@@ -42,7 +42,7 @@ public class CarrelloServlet extends HttpServlet {
 		try {
 			if (action != null) {
 				String idVinoStr = request.getParameter("id");
-				int idVino = (idVinoStr != null) ? Integer.parseInt(idVinoStr) : -1;
+				int idVino = (idVinoStr != null) ? Integer.parseInt(idVinoStr) : -1; //Parsa la string
 				
 				switch (action) {
 					
@@ -54,12 +54,12 @@ public class CarrelloServlet extends HttpServlet {
 						}
 						jsonResponse.put("cartCount", carrello.getNumVoci());
 						response.getWriter().write(jsonResponse.toString());
-						return; // Fine richiesta AJAX
+						return;
 						
 					case "remove":
 						// --- RIMUOVI (AJAX) ---
 						carrello.rimuoviProdotto(idVino);
-						// Rispondi con i nuovi totali
+						
 						jsonResponse.put("cartCount", carrello.getNumVoci());
 						jsonResponse.put("newTotal", carrello.getTotale());
 						response.getWriter().write(jsonResponse.toString());
@@ -71,8 +71,8 @@ public class CarrelloServlet extends HttpServlet {
 						carrello.modificaQuantita(idVino, quantita);
 						
 						VoceCarrello voceAggiornata = null;
-						for(VoceCarrello voce : carrello.getVoci()) {
-							if(voce.getVino().getIdVino() == idVino) {
+						for (VoceCarrello voce : carrello.getVoci()) {
+							if (voce.getVino().getIdVino() == idVino) {
 								voceAggiornata = voce;
 								break;
 							}
@@ -81,7 +81,7 @@ public class CarrelloServlet extends HttpServlet {
 						// Rispondi con i nuovi totali
 						jsonResponse.put("cartCount", carrello.getNumVoci());
 						jsonResponse.put("newTotal", carrello.getTotale());
-						if(voceAggiornata != null) {
+						if (voceAggiornata != null) {
 							jsonResponse.put("newSubtotal", voceAggiornata.getSubtotale());
 						}
 						response.getWriter().write(jsonResponse.toString());
@@ -103,7 +103,7 @@ public class CarrelloServlet extends HttpServlet {
 		}
 
 		// --- AZIONE DEFAULT ---
-		response.setContentType("text/html"); // Resetta il content type per la JSP
+		response.setContentType("text/html");
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/carrello.jsp");
 		dispatcher.forward(request, response);
 	}

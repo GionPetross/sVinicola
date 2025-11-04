@@ -63,16 +63,16 @@
 				<%
 					} else {
 				%>
-					<li class="welcome-msg">Ben Tornato, <%= utente.getNomeUtente() %></li>
+					<li class="welcome-msg"><a href="area_personale">Ben Tornato, </a><%= utente.getNomeUtente() %></li>
 					
 					<%
 						if (utente.getRuolo().equals("admin")) {
 					%>
-						<li><a href="admin/dashboard.jsp">Pannello Admin</a></li>
+						<li><a href="admin/dashboard">Pannello Admin</a></li>
 					<%
 						} else {
 					%>
-						<li><a href="area-personale.jsp">I Miei Ordini</a></li>
+						<li><a href="storico-ordini">I Miei Ordini</a></li>
 					<%
 						}
 					%>

@@ -266,7 +266,6 @@ public class VinoDAO implements DAOinterface<VinoBean> {
 		PreparedStatement ps = null;
 		List<OffertaBean> offerte = new ArrayList<>();
 
-		// JOIN tra Offerta e Applicato
 		String sql = "SELECT O.* FROM " + OFFERTA_TABLE + " O JOIN " + APPLICATO_TABLE + " A " +
 					 "ON O.ID_Offerta = A.ID_Offerta WHERE A.ID_Vino = ?";
 

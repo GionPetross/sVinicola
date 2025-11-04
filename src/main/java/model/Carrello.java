@@ -2,8 +2,10 @@ package model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 //Rappresenta un ordine momentaneo
@@ -17,17 +19,15 @@ public class Carrello implements Serializable {
     public Carrello() {
         this.voci = new HashMap<>();
     }
-
-    //Aggiunge un prodotto al carrello o aggiorna la quantità se già presente.
+    
+    //Crea voci o modifica voci
     public synchronized void aggiungiProdotto(VinoBean vino, int quantitaDaAggiungere) {
         int idVino = vino.getIdVino();
 
         if (voci.containsKey(idVino)) {
-            // Il prodotto è già nel carrello: aggiorniamo la quantità
             VoceCarrello voceEsistente = voci.get(idVino);
             voceEsistente.setQuantita(voceEsistente.getQuantita() + quantitaDaAggiungere);
         } else {
-            // Il prodotto non è nel carrello: creiamo una nuova voce
             VoceCarrello nuovaVoce = new VoceCarrello(vino, quantitaDaAggiungere);
             voci.put(idVino, nuovaVoce);
         }
@@ -84,4 +84,17 @@ public class Carrello implements Serializable {
     public synchronized int getNumVoci() {
         return voci.size();
     }
+    
+    public synchronized Collection<DettaglioOrdineBean> getDettagliOrdine() {
+        List<DettaglioOrdineBean> dettagli = new ArrayList<>();
+        for (VoceCarrello voce : voci.values()) {
+            DettaglioOrdineBean dett = new DettaglioOrdineBean();
+            dett.setIdVino(voce.getVino().getIdVino());
+            dett.setQuantita(voce.getQuantita());
+            dett.setPrezzoStorico(voce.getVino().getPrezzo());
+            dettagli.add(dett);
+        }
+        return dettagli;
+    }
+
 }

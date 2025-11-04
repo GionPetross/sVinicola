@@ -1,0 +1,81 @@
+@charset "UTF-8";
+
+.dettaglio-container {
+    max-width: 1000px;
+    margin: 40px auto;
+}
+
+.prodotto-scheda {
+    display: flex;
+    gap: 40px;
+    padding: 30px;
+}
+
+.colonna-immagine {
+    width: 40%;
+    text-align: center;
+}
+
+.colonna-dettagli {
+    width: 60%;
+}
+
+.prodotto-immagine {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.prodotto-scheda h1 {
+    margin-top: 0;
+    font-size: 2rem;
+    border-bottom: 2px solid var(--colore-bordo-etichetta);
+    padding-bottom: 10px;
+    color: var(--colore-vino-rosso-scuro);
+}
+
+.prezzo-acquisto {
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--colore-bordo-etichetta);
+}
+
+.prezzo-base {
+    font-size: 1.8rem;
+    color: var(--colore-accento);
+    margin-bottom: 15px;
+}
+
+.lista-dettagli {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    font-size: 0.95rem;
+}
+
+.sezione-offerte h3 {
+    margin-top: 30px;
+    color: var(--colore-vino-rosso-scuro);
+}
+
+.btn-aggiungi {
+    width: 100%;
+    padding: 15px;
+    margin-top: 10px;
+}
+
+.fake-btn {
+	display: block;
+	text-decoration: none;
+	background-color: var(--colore-sfondo-etichetta);
+	color: var(--colore-accento);
+	font-weight: bold;
+	text-align: center;
+	padding: 15px;
+	border: 1px solid var(--colore-bordo-etichetta);
+	border-radius: 4px;
+	transition: background-color 0.2s ease, color 0.2s ease;
+	cursor: pointer;
+}

@@ -124,3 +124,12 @@
 .product-purchase-bar .btn-aggiungi:hover .icon-cart {
 	display: none;
 }
+
+.btn-aggiungi.notifica-aggiunto{
+	animation: aggiuntoFlash 0.5s ease;	
+}
+
+@keyframes aggiuntoFlash {
+	from { background-color: var(--colore-accento); color: var(--colore-sfondo-etichetta); }
+	to   { background-color: var(--colore-sfondo-etichetta); color: var(--colore-accento); }
+}

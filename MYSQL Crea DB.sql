@@ -18,12 +18,12 @@ DROP TABLE IF EXISTS Applicato;
 DROP TABLE IF EXISTS Lista_Preferiti;
 DROP TABLE IF EXISTS Ordine;
 DROP TABLE IF EXISTS Indirizzo;
-DROP TABLE IF EXISTS Vino; -- ERRORE CORRETTO: Aggiunto DROP per Vino
+DROP TABLE IF EXISTS Vino;
 DROP TABLE IF EXISTS Offerta;
 DROP TABLE IF EXISTS Utente;
 
 
--- Tabelle Utente (SUGGERIMENTO: Aggiunto UNIQUE a Email)
+-- Tabelle Utente 
 CREATE TABLE Utente (
     ID_Utente INT AUTO_INCREMENT PRIMARY KEY,
     Nome_Utente VARCHAR(100) NOT NULL UNIQUE, 
@@ -62,7 +62,7 @@ CREATE TABLE Vino (
     Stock INT NOT NULL DEFAULT 0, -- Stock disponibile
     Formato VARCHAR(20), -- Quanti litri
     Origine VARCHAR(100), -- Cantina/Regione
-    In_Vendita BOOLEAN NOT NULL DEFAULT TRUE 
+    In_Vendita BOOLEAN NOT NULL DEFAULT TRUE,
     Data_Aggiunta TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -108,14 +108,17 @@ CREATE TABLE Lista_Preferiti (
 CREATE TABLE Ordine (
     ID_Ordine INT AUTO_INCREMENT PRIMARY KEY,
     ID_Utente INT NOT NULL, 
-    ID_IndirizzoSpedizione INT NOT NULL, 
+    ViaSpedizione VARCHAR(100) NOT NULL,
+    CapSpedizione CHAR(5) NOT NULL,
+    CittaSpedizione VARCHAR(50) NOT NULL,
+    ProvinciaSpedizione CHAR(2) NOT NULL,
+    
     Data TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     Totale_Complessivo DECIMAL(10, 2) NOT NULL,
-    
+    Stato ENUM('in attesa', 'consegnato', 'annullato') NOT NULL DEFAULT 'in attesa',
+
     CONSTRAINT fk_ordine_utente FOREIGN KEY (ID_Utente) 
-        REFERENCES Utente(ID_Utente) ON DELETE NO ACTION, 
-    CONSTRAINT fk_ordine_indirizzo FOREIGN KEY (ID_IndirizzoSpedizione) 
-        REFERENCES Indirizzo(ID_Indirizzo) ON DELETE NO ACTION
+        REFERENCES Utente(ID_Utente) ON DELETE NO ACTION
 );
 
 
