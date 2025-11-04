@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		}
 	}
 
-	// --- AZIONE: AGGIUNGI AL CARRELLO (Da Catalogo e Dettaglio) ---
+	// --- AZIONE: AGGIUNGI AL CARRELL ---
 	if (catalogoContainer) {
 		catalogoContainer.addEventListener("click", function(event) {
 			const bottoneAggiungi = event.target.closest(".btn-aggiungi");

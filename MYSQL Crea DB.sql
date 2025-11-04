@@ -15,7 +15,6 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- Distruzione nell'ordine corretto (dalle tabelle che dipendono ad altre, a quelle da cui si dipende)
 DROP TABLE IF EXISTS DettaglioOrdine;
 DROP TABLE IF EXISTS Applicato;
-DROP TABLE IF EXISTS Lista_Preferiti;
 DROP TABLE IF EXISTS Ordine;
 DROP TABLE IF EXISTS Indirizzo;
 DROP TABLE IF EXISTS Vino;
@@ -89,18 +88,6 @@ CREATE TABLE Applicato (
         REFERENCES Vino(ID_Vino) ON DELETE CASCADE,
     CONSTRAINT fk_applicato_offerta FOREIGN KEY (ID_Offerta) 
         REFERENCES Offerta(ID_Offerta) ON DELETE CASCADE
-);
-
-
--- Tabella Preferiti
-CREATE TABLE Lista_Preferiti (
-    ID_Utente INT,
-    ID_Vino INT,
-    PRIMARY KEY (ID_Utente, ID_Vino),
-    CONSTRAINT fk_preferiti_utente FOREIGN KEY (ID_Utente) 
-        REFERENCES Utente(ID_Utente) ON DELETE CASCADE,
-    CONSTRAINT fk_preferiti_vino FOREIGN KEY (ID_Vino) 
-        REFERENCES Vino(ID_Vino) ON DELETE CASCADE
 );
 
 

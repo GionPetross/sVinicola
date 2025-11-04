@@ -27,7 +27,6 @@ public class AreaPersonaleServlet extends HttpServlet {
 		
 		HttpSession session = request.getSession(false);
 
-		//Controllo se utente o guest
 		if (session == null || session.getAttribute("utente") == null) {
 			response.sendRedirect("login.jsp");
 			return;
