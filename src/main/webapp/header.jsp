@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="model.UtenteBean" %>
+<%@ page import="model.Carrello" %>
 <%
 	UtenteBean utente = (UtenteBean) session.getAttribute("utente");
 %>
@@ -39,9 +40,19 @@
 				</li>
 				
 				<li>
-					<a href="carrello.jsp" class="header-icon-link">
-						<img src="images/carrello.png" alt="Carrello" class="header-icon-img invert-on-dark">
-					</a>
+					<a href="carrello" class="header-icon-link cart-link-container">
+                        <img src="images/carrello.png" alt="Carrello" class="header-icon-img invert-on-dark">
+                        
+                        <%-- === BADGE CONTATORE === --%>
+                        <%
+                            Carrello carrello = (Carrello) session.getAttribute("carrello");
+                            if (carrello != null && !carrello.isEmpty()) {
+                        %>
+                                <span class="cart-badge"><%= carrello.getNumVoci() %></span>
+                        <%
+                            }
+                        %>
+                    </a>
 				</li>
 				
 				<%

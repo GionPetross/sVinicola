@@ -104,7 +104,7 @@ CREATE TABLE Lista_Preferiti (
 );
 
 
--- Tabella Ordini (SUGGERIMENTO: Reinserito lo Stato dell'ordine)
+-- Tabella Ordini
 CREATE TABLE Ordine (
     ID_Ordine INT AUTO_INCREMENT PRIMARY KEY,
     ID_Utente INT NOT NULL, 

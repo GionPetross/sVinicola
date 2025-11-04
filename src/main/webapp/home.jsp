@@ -63,6 +63,7 @@
         </div>
 	</main>
 	<script src="scripts/filters-ajax.js"></script>
+	<script src="scripts/carrello-ajax.js"></script>
 	<jsp:include page="/footer.jsp" />
 
 </body>

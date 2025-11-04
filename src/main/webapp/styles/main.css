@@ -5,6 +5,7 @@
 @import url('components.css');
 @import url('product-card.css');
 @import url('form.css');
+@import url('carrello.css');
 
 html {
 	background-color: var(--colore-sfondo);
