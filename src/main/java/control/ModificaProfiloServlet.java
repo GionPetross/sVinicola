@@ -70,7 +70,7 @@ public class ModificaProfiloServlet extends HttpServlet {
 			request.setAttribute("messaggioErrore", "Errore database durante l'aggiornamento.");
 		}
 
-		response.sendRedirect("area-personale");
+		response.sendRedirect("area_personale");
 	}
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 

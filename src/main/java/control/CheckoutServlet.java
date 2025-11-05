@@ -55,7 +55,7 @@ public class CheckoutServlet extends HttpServlet {
 			
 			if (indirizzi == null || indirizzi.isEmpty()) {
 				session.setAttribute("feedbackErrore", "Per procedere al checkout devi prima salvare almeno un indirizzo di spedizione.");
-				response.sendRedirect("area-personale");
+				response.sendRedirect("area_personale");
 				return;
 			}
 			

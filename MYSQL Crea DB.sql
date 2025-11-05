@@ -20,7 +20,7 @@ DROP TABLE IF EXISTS Indirizzo;
 DROP TABLE IF EXISTS Vino;
 DROP TABLE IF EXISTS Offerta;
 DROP TABLE IF EXISTS Utente;
---DROP TABLE IF EXISTS Preferiti;
+-- DROP TABLE IF EXISTS Preferiti;
 
 -- Tabelle Utente 
 CREATE TABLE Utente (
@@ -108,7 +108,7 @@ CREATE TABLE Ordine (
         REFERENCES Utente(ID_Utente) ON DELETE NO ACTION
 );
 
---CREATE TABLE Lista_Preferiti (
+-- CREATE TABLE Lista_Preferiti (
 --  ID_Utente INT,
 --  ID_Vino INT,
 --  PRIMARY KEY (ID_Utente, ID_Vino),
@@ -116,7 +116,7 @@ CREATE TABLE Ordine (
 --      REFERENCES Utente(ID_Utente) ON DELETE CASCADE,
 --  CONSTRAINT fk_preferiti_vino FOREIGN KEY (ID_Vino) 
 --      REFERENCES Vino(ID_Vino) ON DELETE CASCADE
---);
+-- );
 
 -- Tabelle Dettaglio Ordini
 CREATE TABLE DettaglioOrdine (
