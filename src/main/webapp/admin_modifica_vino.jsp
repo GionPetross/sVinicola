@@ -1,4 +1,3 @@
-<%-- File: admin_modifica_vino.jsp (Aggiornato con nuove classi CSS) --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="model.VinoBean" %>
 <%@ page import="java.util.Collection" %>

@@ -31,7 +31,7 @@
 	<main class="carrello-container" style="max-width: 700px; margin: 40px auto;">
 		<h1>Checkout: Riepilogo Ordine</h1>
 
-		<%-- 1. MESSAGGIO DI ERRORE (Se la POST è fallita) --%>
+		<%-- MESSAGGIO DI ERRORE (Se la POST è fallita) --%>
 		<% 
 			String messaggioErrore = (String) request.getAttribute("messaggioErrore");
 			if (messaggioErrore != null) {
@@ -70,7 +70,7 @@
 
 		<hr style="margin: 30px 0;">
 
-		<%-- 2. Form per la Scelta dell'Indirizzo e Conferma --%>
+		<%-- Form per la Scelta dell'Indirizzo e Conferma --%>
 		<form method="POST" action="checkout" class="form-style-checkout">
 			
 			<div class="checkout-sezione">

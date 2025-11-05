@@ -57,32 +57,16 @@
                             <td><%= voce.getVino().getNome() %></td>
                             <td><%= voce.getVino().getPrezzo() %> &euro;</td>
                             
-                            <%-- 
-                              MODIFICA 2: 
-                              Rimosso il <form>. 
-                              Aggiunte classi e attributi "data-" per JS.
-                            --%>
                             <td>
                                 <input type="number" 
                                        value="<%= voce.getQuantita() %>" 
-                                       min="0" <%-- min="0" permette di rimuovere impostando a 0 --%>
+                                       min="0"
                                        max="99" 
                                        class="input-quantita ajax-update" 
-                                       data-id="<%= idVino %>"> <%-- Il JS legge questo ID --%>
+                                       data-id="<%= idVino %>"> 
                             </td>
                             
-                            <%-- 
-                              MODIFICA 3: 
-                              Diamo un ID al Subtotale per 
-                              permettere a JS di aggiornarlo.
-                            --%>
                             <td id="subtotale-<%= idVino %>"><%= voce.getSubtotale() %> &euro;</td>
-                            
-                            <%-- 
-                              MODIFICA 4: 
-                              Rimosso <a>. 
-                              Usiamo un <button> con classi e "data-" per JS.
-                            --%>
                             <td>
                                 <button class="btn-remove ajax-remove" data-id="<%= idVino %>">&times;</button>
                             </td>
@@ -93,18 +77,11 @@
                 
                 <div class="carrello-riepilogo">
                     <div class="totale">
-                        <%-- 
-                          MODIFICA 5: 
-                          Aggiunto uno <span> con ID attorno al valore totale
-                          per permettere a JS di aggiornarlo.
-                        --%>
                         <strong>Totale: <span id="carrello-totale"><%= carrello.getTotale() %></span> &euro;</strong>
                     </div>
                     <div class="carrello-azioni">
-                        <%-- Questo link ricarica la pagina (corretto) --%>
                         <a href="carrello?action=clear" class="btn-secondary">Svuota Carrello</a>
                         
-                        <%-- Link al checkout (prossimo passo) --%>
                         <a href="checkout" class="btn">Procedi al Checkout</a>
                     </div>
                 </div>

@@ -15,7 +15,6 @@
 
 	<main class="admin-container">
 		
-		<%-- Stile centrato --%>
 		<div class="form-container" style="max-width: 600px; margin: 40px auto;">
 			
 			<h1 style="text-align: center;">Crea Nuova Offerta</h1>
@@ -34,7 +33,6 @@
 				<div class="form-group">
 					<label for="percentuale">Percentuale di Sconto (%):</label>
 					<input type="number" id="percentuale" name="percentuale" min="1" max="100" required>
-					<%-- Qui puoi aggiungere un validatore JS per il range 1-100 --%>
 				</div>
 				
 				<div class="form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
